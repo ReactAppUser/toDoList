@@ -1,2 +1,2 @@
 # toDoList
-My hope for better perspective in my life!
+My hope for better perspective in our life!
