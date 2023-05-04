@@ -6,10 +6,14 @@
         {task: 'Buy'},
         ];
 
+    // let newToDoListLengths
+
     // console.log('toDoList', toDoList);
 
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
+
+
 
     let ElementCreater =  function (Dom, element, attribute1, attributeValue1,  attribute2, attributeValue2,className, value) {
         let DOMEl = Dom;
@@ -22,18 +26,50 @@
         return DOMEl
     };
 
-   toDoList.map((element) => {
+    // console.log('toDoList', toDoList)
+    // console.log('toDoList.lengths', toDoList.length)
+
+    let pushEvent = function (task) {
+        ElementCreater(document.querySelector('.toDoList'),'li','aria-current', null, null,'true', 'list-group-item', task );
+        // this.event.preventDefault()
+    //     console.log('event', task);
+    //     console.log('toDoList', toDoList)
+    //     // let newToDoList  = toDoList.push({task});
+    //     // console.log('newToDoList', newToDoList);
+    //     // if(toDoList.length = newToDoList) {
+    //     //     toDoList.map((element) => {
+    //     //             ElementCreater(document.querySelector('.toDoList'),'li','aria-current' , null, null,'true', 'list-group-item', element.task );
+    //     //             // let liEl = document.createElement('li');
+    //     //             // liEl.innerHTML = element.task;
+    //     //             // liEl.classList.add('list-group-item');
+    //     //             // liEl.setAttribute('aria-current', 'true');
+    //     //             // elForToDoList.append(liEl);
+    //     //         }
+    //     //     );
+    //     // }
+    //     //
+    //     // return  newToDoList
+    //
+    };
+
+
+    // console.log('newToDoListLengths', newToDoListLengths)
+
+    ElementCreater(document.querySelector('.body'),'form', null,null, null,null ,'form', null);
+    ElementCreater(document.querySelector('.form'),'input', null,null, 'onchange', 'pushEvent(this.value)', 'inputForText', null);
+    ElementCreater(document.querySelector('.form'),'input', 'type','button', 'value', 'submitButton', 'inputButton', 'Submit Button');
+
+
+    toDoList.map((element) => {
        ElementCreater(document.querySelector('.toDoList'),'li','aria-current' , null, null,'true', 'list-group-item', element.task );
-        // let liEl = document.createElement('li');
-        // liEl.innerHTML = element.task;
-        // liEl.classList.add('list-group-item');
-        // liEl.setAttribute('aria-current', 'true');
-        // elForToDoList.append(liEl);
+    //     // let liEl = document.createElement('li');
+    //     // liEl.innerHTML = element.task;
+    //     // liEl.classList.add('list-group-item');
+    //     // liEl.setAttribute('aria-current', 'true');
+    //     // elForToDoList.append(liEl);
        }
     );
-    ElementCreater(document.querySelector('.body'),'form', null,null, null,null ,'form', null  );
-    ElementCreater(document.querySelector('.form'),'input', null,null, 'onchange', "alert(this.value)", 'inputForText', null  );
-    ElementCreater(document.querySelector('.form'),'input', 'type','button', 'value', 'submitButton', 'inputButton', 'Submit Button'  );
+
 
     // let getInput = document.querySelector('.inputForText')
 
