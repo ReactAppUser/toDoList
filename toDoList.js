@@ -29,7 +29,9 @@
     // console.log('toDoList', toDoList)
     // console.log('toDoList.lengths', toDoList.length)
 
-    let pushEvent = function (task) {
+    let pushEvent = function (task, event) {
+        // event.preventDefault();
+
         ElementCreater(document.querySelector('.toDoList'),'li','aria-current', null, null,'true', 'list-group-item', task );
         // this.event.preventDefault()
     //     console.log('event', task);
@@ -52,11 +54,22 @@
     //
     };
 
+    let  keyDownEnter =  document.addEventListener( 'keydown',  (event, task) => {
+        if( event.code === 'Enter') {
+            event.preventDefault();
+            // console.log('event', event.target.value);
+            pushEvent(event.target.value);
+        }
+    });
+
+
+
+
 
     // console.log('newToDoListLengths', newToDoListLengths)
 
     ElementCreater(document.querySelector('.body'),'form', null,null, null,null ,'form', null);
-    ElementCreater(document.querySelector('.form'),'input', null,null, 'onchange', 'pushEvent(this.value)', 'inputForText', null);
+    ElementCreater(document.querySelector('.form'),'input', 'onchange','keyDownEnter', 'onchange', 'pushEvent(this.value, event)', 'inputForText', null);
     ElementCreater(document.querySelector('.form'),'input', 'type','button', 'value', 'submitButton', 'inputButton', 'Submit Button');
 
 
