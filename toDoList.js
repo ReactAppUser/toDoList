@@ -6,89 +6,98 @@
         {task: 'Buy'},
         ];
 
-    // let newToDoListLengths
-
-    // console.log('toDoList', toDoList);
-
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
 
+    let formElement = new CreaterForObjectElement(
+        '.body',
+        'form',
+        '',
+        '',
+        '',
+        '',
+        'form',
+        '',
+        );
+
+    let inputElement = new CreaterForObjectElement(
+        '.form',
+        'input',
+        'onchange',
+        'keyDownEnter',
+        'onchange',
+        'pushEvent(this.value, event)',
+        'inputForText',
+        '',
+    );
+
+    let inputButtonElement = new CreaterForObjectElement(
+        '.form',
+        'input',
+        'type',
+        'button',
+        'value',
+        'submitButton',
+        'inputButton',
+        'Submit Button',
+    );
+
+    let liElement = new CreaterForObjectElement('.toDoList',
+        'li',
+        'aria-current',
+        'true',
+        'list-group-item',
+    );
+
+    elementCreater(formElement);
+
+    elementCreater(inputElement);
+
+    elementCreater(inputButtonElement);
 
 
-    let ElementCreater =  function (Dom, element, attribute1, attributeValue1,  attribute2, attributeValue2,className, value) {
-        let DOMEl = Dom;
-        let readyElement = document.createElement(element);
-        readyElement.setAttribute(attribute1, attributeValue1);
-        readyElement.setAttribute(attribute2, attributeValue2);
-        readyElement.classList.add(className);
-        readyElement.innerHTML = value;
+
+    function CreaterForObjectElement(dom, element, attribute1, attributeValue1, attribute2, attributeValue2, className, value) {
+        this.dom = dom;
+        this.element = element;
+        this.attribute1 = attribute1 ? attribute1 : null;
+        this.attributeValue1 = attributeValue1 ? attributeValue1 : null;
+        this.attribute2 = attribute2 ? attribute2 : null;
+        this.attributeValue2 = attributeValue2 ? attributeValue2 : null;
+        this.className = className;
+        this.value = value ? value : null;
+    };
+
+
+    function elementCreater(objectElement){
+        let DOMEl = document.querySelector(objectElement.dom);
+        let readyElement = document.createElement(objectElement.element);
+        readyElement.setAttribute(objectElement.attribute1, objectElement.attributeValue1);
+        readyElement.setAttribute(objectElement.attribute2, objectElement.attributeValue2);
+        readyElement.classList.add(objectElement.className);
+        readyElement.innerHTML = objectElement.value;
         DOMEl.append(readyElement);
         return DOMEl
     };
 
-    // console.log('toDoList', toDoList)
-    // console.log('toDoList.lengths', toDoList.length)
-
-    let pushEvent = function (task, event) {
-        // event.preventDefault();
-
-        ElementCreater(document.querySelector('.toDoList'),'li','aria-current', null, null,'true', 'list-group-item', task );
-        // this.event.preventDefault()
-    //     console.log('event', task);
-    //     console.log('toDoList', toDoList)
-    //     // let newToDoList  = toDoList.push({task});
-    //     // console.log('newToDoList', newToDoList);
-    //     // if(toDoList.length = newToDoList) {
-    //     //     toDoList.map((element) => {
-    //     //             ElementCreater(document.querySelector('.toDoList'),'li','aria-current' , null, null,'true', 'list-group-item', element.task );
-    //     //             // let liEl = document.createElement('li');
-    //     //             // liEl.innerHTML = element.task;
-    //     //             // liEl.classList.add('list-group-item');
-    //     //             // liEl.setAttribute('aria-current', 'true');
-    //     //             // elForToDoList.append(liEl);
-    //     //         }
-    //     //     );
-    //     // }
-    //     //
-    //     // return  newToDoList
-    //
+    function pushEvent(task){
+        liElement.value = task;
+        elementCreater(liElement);
     };
 
-    let  keyDownEnter =  document.addEventListener( 'keydown',  (event, task) => {
+    document.addEventListener('keydown',(event, task) => {
         if( event.code === 'Enter') {
             event.preventDefault();
-            // console.log('event', event.target.value);
             pushEvent(event.target.value);
         }
     });
 
-
-
-
-
-    // console.log('newToDoListLengths', newToDoListLengths)
-
-    ElementCreater(document.querySelector('.body'),'form', null,null, null,null ,'form', null);
-    ElementCreater(document.querySelector('.form'),'input', 'onchange','keyDownEnter', 'onchange', 'pushEvent(this.value, event)', 'inputForText', null);
-    ElementCreater(document.querySelector('.form'),'input', 'type','button', 'value', 'submitButton', 'inputButton', 'Submit Button');
-
-
     toDoList.map((element) => {
-       ElementCreater(document.querySelector('.toDoList'),'li','aria-current' , null, null,'true', 'list-group-item', element.task );
-    //     // let liEl = document.createElement('li');
-    //     // liEl.innerHTML = element.task;
-    //     // liEl.classList.add('list-group-item');
-    //     // liEl.setAttribute('aria-current', 'true');
-    //     // elForToDoList.append(liEl);
-       }
+        liElement.value = element.task;
+        elementCreater(liElement);
+    }
     );
 
 
-    // let getInput = document.querySelector('.inputForText')
-
-   // let liInput = document.createElement('input');
-   //  elForToDoList.append(liInput);
-
-    // console.log('elForToDoList', getInput);
 
 
