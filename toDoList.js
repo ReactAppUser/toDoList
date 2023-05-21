@@ -1,10 +1,10 @@
 
     const toDoList = [
-        {task: 'Hello', taskClassName: 'Hello'},
-        {task: 'What Is Your Name?', taskClassName: 'WhatIsYourName?'},
-        {task: 'How are you?', taskClassName: 'HowAreYou?'},
-        {task: 'what is you like?', taskClassName: 'WhatIsYouLike?'},
-        {task: 'Buy', taskClassName: 'Buy'},
+        {task: 'Hello', id: 'id1',},
+        {task: 'What Is Your Name?', id: 'id2',},
+        {task: 'How are you?', id: 'id3',},
+        {task: 'what is you like?', id: 'id4',},
+        {task: 'Buy', id: 'id5'},
         ];
 
     let elForToDoList = document.querySelector('.toDoList');
@@ -16,6 +16,7 @@
         [['null', 'null'], ['null', 'null']],
         'form',
         '',
+        '',
         );
 
     let inputElement = new CreatorForObjectElement(
@@ -23,6 +24,7 @@
         'input',
         [['onchange', 'keyDownEnter'], ['onchange', 'pushEvent(this.value, event)']],
         'inputForText',
+        '',
         '',
     );
 
@@ -32,6 +34,7 @@
         [['type', 'button'], ['value', 'submitButton']],
         'null',
         'Submit Button',
+        '',
     );
 
     let chckedButtonElement = new CreatorForObjectElement(
@@ -40,23 +43,27 @@
         [['type', 'button'], ['value', 'CheckedButton']],
         'null',
         'Done checking button',
+        '',
     );
 
     let liElement = new CreatorForObjectElement(
         '.toDoList',
         'li',
         [['aria-current', 'true'], ['null', 'null']],
-        `null`,
+        `list-group-item`,
         'null',
+        '',
     );
 
     let checkboxElement = new CreatorForObjectElement(
         '.list-group-item',
         'input',
         [['type', 'checkbox'], ['name', 'null'], ['value', 'null']],
-        'checkbox-group-item',
+        'list-group-item',
         'null',
+        '',
     );
+
 
     elementCreator(formElement);
 
@@ -67,12 +74,16 @@
     elementCreator(chckedButtonElement);
 
 
-    function CreatorForObjectElement(dom, element, attribute, className, value) {
+
+
+
+    function CreatorForObjectElement(dom, element, attribute, className, value, id) {
         this.dom = dom;
         this.element = element;
         this.attribute = attribute ? attribute : null;
-        this.className = className ? className : null;;
+        this.className = className ? className : null;
         this.value = value ? value : null;
+        this.id = id ? id : null;
     };
 
     function elementCreator(objectElement){
@@ -84,19 +95,31 @@
                     let attributeValue = attributesStack[1];
                     readyElement.setAttribute(attribute, attributeValue);
          });
+        readyElement.setAttribute("id", objectElement.id);
         readyElement.classList.add(objectElement.className);
         readyElement.innerHTML = objectElement.value;
         DOMEl.append(readyElement);
         return DOMEl
     };
 
+    function checkboxCreator(objectIdElement){
+        console.log('objectIdElement',objectIdElement );
+        let DOMIdEl = document.getElementById(objectIdElement.dom);
+        let readyIdElement = document.createElement(objectIdElement.element);
+        let attributeIdArray = objectIdElement.attribute;
+        attributeIdArray.forEach(function(attributesStack){
+            let attribute = attributesStack[0];
+            let attributeValue = attributesStack[1];
+            readyIdElement.setAttribute(attribute, attributeValue);
+        });
+        readyIdElement.classList.add(objectIdElement.className);
+        readyIdElement.innerHTML = objectIdElement.value;
+        DOMIdEl.append(readyIdElement);
+        return DOMIdEl
+    };
+
     function pushEvent(task){
         liElement.value = task;
-        if (liElement.value) {
-            liElement.className = task;
-        } else {
-            liElement.className = 'newFunction'
-        }
         elementCreator(liElement);
     };
 
@@ -110,17 +133,17 @@
 
     toDoList.map((element) => {
         console.log('element', element);
-         liElement.className = element.taskClassName;
-         liElement.value = element.task;
-         elementCreator(liElement);
+        liElement.value = element.task;
+        liElement.id = element.id;
+        checkboxElement.dom = element.id;
+        elementCreator(liElement);
+        checkboxCreator(checkboxElement);
     }
     );
 
-    // toDoList.map((element) => {
 
-    //     elementCreator(checkboxElement);
-    //     }
-    // );
+
+
 
 
 
