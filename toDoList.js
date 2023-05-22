@@ -3,7 +3,7 @@
         {task: 'Hello', id: 'id1',},
         {task: 'What Is Your Name?', id: 'id2',},
         {task: 'How are you?', id: 'id3',},
-        {task: 'what is you like?', id: 'id4',},
+        {task: 'What is you like?', id: 'id4',},
         {task: 'Buy', id: 'id5'},
         ];
 
@@ -75,15 +75,14 @@
 
 
 
-
-
-    function CreatorForObjectElement(dom, element, attribute, className, value, id) {
+    function CreatorForObjectElement(dom, element, attribute, className, value, id, name) {
         this.dom = dom;
         this.element = element;
         this.attribute = attribute ? attribute : null;
         this.className = className ? className : null;
         this.value = value ? value : null;
         this.id = id ? id : null;
+        this.name = name ? name : null;
     };
 
     function elementCreator(objectElement){
@@ -103,7 +102,7 @@
     };
 
     function checkboxCreator(objectIdElement){
-        console.log('objectIdElement',objectIdElement );
+        // console.log('objectIdElement',objectIdElement );
         let DOMIdEl = document.getElementById(objectIdElement.dom);
         let readyIdElement = document.createElement(objectIdElement.element);
         let attributeIdArray = objectIdElement.attribute;
@@ -112,6 +111,8 @@
             let attributeValue = attributesStack[1];
             readyIdElement.setAttribute(attribute, attributeValue);
         });
+        readyIdElement.setAttribute("name", objectIdElement.name);
+        readyIdElement.setAttribute("value", objectIdElement.value);
         readyIdElement.classList.add(objectIdElement.className);
         readyIdElement.innerHTML = objectIdElement.value;
         DOMIdEl.append(readyIdElement);
@@ -119,8 +120,26 @@
     };
 
     function pushEvent(task){
+        console.log('task', task);
+        let idIterator = 5;
+        let idIteratorIncrement = function(number){
+           return ++number;
+        };
+        // // while(100) {
+        //     idIteratorIncrement(idIterator);
+        // };
+        console.log('idIteratorIncrement' , idIteratorIncrement(idIterator))
+
+        let idGenerator = `${'id'+idIteratorIncrement(idIterator)}`;
+
         liElement.value = task;
+        liElement.id = idGenerator;
+        checkboxElement.dom = idGenerator;
+        checkboxElement.value = task;
+        checkboxElement.name = task;
         elementCreator(liElement);
+        checkboxCreator(checkboxElement);
+
     };
 
     document.addEventListener('keydown',(event, task) => {
@@ -132,10 +151,12 @@
 
 
     toDoList.map((element) => {
-        console.log('element', element);
+        // console.log('element', element);
         liElement.value = element.task;
         liElement.id = element.id;
         checkboxElement.dom = element.id;
+        checkboxElement.value = element.task;
+        checkboxElement.name = element.task;
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
     }
