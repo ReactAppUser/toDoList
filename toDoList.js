@@ -1,10 +1,10 @@
 
     const toDoList = [
-        {task: 'Hello', id: 'id1',},
-        {task: 'What Is Your Name?', id: 'id2',},
-        {task: 'How are you?', id: 'id3',},
-        {task: 'What is you like?', id: 'id4',},
-        {task: 'Buy', id: 'id5'},
+        {task: 'Hello', id: '1',},
+        {task: 'What Is Your Name?', id: '2',},
+        {task: 'How are you?', id: '3',},
+        {task: 'What is you like?', id: '4',},
+        {task: 'Buy', id: '5'},
         ];
 
     let elForToDoList = document.querySelector('.toDoList');
@@ -58,7 +58,7 @@
     let checkboxElement = new CreatorForObjectElement(
         '.list-group-item',
         'input',
-        [['type', 'checkbox'], ['name', 'null'], ['value', 'null']],
+        [['type', 'checkbox'], ['name', 'null'], ['value', 'null'], ['onchange', 'checkedEvent(event)']],
         'list-group-item',
         'null',
         '',
@@ -73,7 +73,11 @@
 
     elementCreator(chckedButtonElement);
 
+    function checkedEvent(event) {
 
+        console.log('checked', event);
+        return true
+    }
 
     function CreatorForObjectElement(dom, element, attribute, className, value, id, name) {
         this.dom = dom;
@@ -119,30 +123,35 @@
         return DOMIdEl
     };
 
-    function pushEvent(task){
+    function pushEvent(task, event){
+
         console.log('task', task);
+        console.log('taskEvent', event);
         let idIterator = 5;
+
         let idIteratorIncrement = function(number){
            return ++number;
         };
-        // // while(100) {
-        //     idIteratorIncrement(idIterator);
-        // };
+        while(idIterator < Number(toDoList.length)) {
+            ++idIterator
+        };
+        
+        let idGenerator = `${idIteratorIncrement(idIterator)}`;
         console.log('idIteratorIncrement' , idIteratorIncrement(idIterator))
 
-        let idGenerator = `${'id'+idIteratorIncrement(idIterator)}`;
 
         liElement.value = task;
         liElement.id = idGenerator;
+        toDoList.push({task: task, id: idGenerator});
         checkboxElement.dom = idGenerator;
         checkboxElement.value = task;
         checkboxElement.name = task;
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
-
+        console.log('toDoList', toDoList.length);
     };
 
-    document.addEventListener('keydown',(event, task) => {
+    document.addEventListener('keydown',(event) => {
         if( event.code === 'Enter') {
             event.preventDefault();
             pushEvent(event.target.value);
