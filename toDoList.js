@@ -9,6 +9,8 @@
 
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
+    let chckedButtonElementStatus = false;
+    let checkedCheckboxEventStatus =false;
 
     let formElement = new CreatorForObjectElement(
         '.body',
@@ -40,7 +42,7 @@
     let chckedButtonElement = new CreatorForObjectElement(
         '.form',
         'input',
-        [['type', 'button'], ['value', 'CheckedButton']],
+        [['type', 'button'], ['value', 'CheckedButton'], ['onclick', 'checkedButtonEvent(event)']],
         'null',
         'Done checking button',
         '',
@@ -58,7 +60,7 @@
     let checkboxElement = new CreatorForObjectElement(
         '.list-group-item',
         'input',
-        [['type', 'checkbox'], ['name', 'null'], ['value', 'null'], ['onchange', 'checkedEvent(event)']],
+        [['type', 'checkbox'], ['name', 'null'], ['value', 'null'], ['onchange', 'checkedCheckboxEvent(event)']],
         'list-group-item',
         'null',
         '',
@@ -73,11 +75,33 @@
 
     elementCreator(chckedButtonElement);
 
-    function checkedEvent(event) {
 
-        console.log('checked', event);
-        return true
+
+      function checkedButtonEvent (event) {
+          console.log('chckedButtonElementStatus before', chckedButtonElementStatus);
+          if(chckedButtonElementStatus == false) {
+              chckedButtonElementStatus = !chckedButtonElementStatus;
+          }
+
+          console.log('chckedButtonElementStatus after', chckedButtonElementStatus);
+      }
+
+     function checkedCheckboxEvent(event) {
+
+        let checkedStatus = event.target.checked;
+         console.log('checked', checkedStatus);
+         console.log ('checkedCheckboxEventStatus before', checkedCheckboxEventStatus)
+
+         if(checkedStatus = true){
+             checkedCheckboxEventStatus = !checkedCheckboxEventStatus;
+         }
+         console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus)
+        return checkedStatus;
     }
+
+
+
+
 
     function CreatorForObjectElement(dom, element, attribute, className, value, id, name) {
         this.dom = dom;
@@ -135,7 +159,7 @@
         while(idIterator < Number(toDoList.length)) {
             ++idIterator
         };
-        
+
         let idGenerator = `${idIteratorIncrement(idIterator)}`;
         console.log('idIteratorIncrement' , idIteratorIncrement(idIterator))
 
