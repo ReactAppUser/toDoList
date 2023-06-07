@@ -181,6 +181,7 @@
         liElement.id = idGenerator;
         toDoList.push({task: task, id: idGenerator});
         checkboxElement.dom = idGenerator;
+        checkboxElement.id = idGenerator;
         checkboxElement.value = task;
         checkboxElement.name = task;
         elementCreator(liElement);
