@@ -7,6 +7,10 @@
         {task: 'Buy', id: '5'},
         ];
 
+    const toDoCheckedList = [
+
+    ]
+
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
     let chckedButtonElementStatus = false;
@@ -77,30 +81,38 @@
 
 
 
-      function checkedButtonEvent (event) {
-          console.log('chckedButtonElementStatus before', chckedButtonElementStatus);
-          if(chckedButtonElementStatus == false) {
-              chckedButtonElementStatus = !chckedButtonElementStatus;
-          }
-
-          console.log('chckedButtonElementStatus after', chckedButtonElementStatus);
-      }
 
      function checkedCheckboxEvent(event) {
 
         let checkedStatus = event.target.checked;
          console.log('checked', checkedStatus);
-         console.log ('checkedCheckboxEventStatus before', checkedCheckboxEventStatus)
+
+         console.log('checkedCheckboxEventStatus event', event.target);
+         console.log('checkedCheckboxEventStatus before', checkedCheckboxEventStatus);
 
          if(checkedStatus = true){
              checkedCheckboxEventStatus = !checkedCheckboxEventStatus;
          }
-         console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus)
-        return checkedStatus;
+         console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus);
+
+
+
+         return checkedStatus;
     }
 
+    function checkedButtonEvent (event) {
+        console.log('chckedButtonElementStatus before', chckedButtonElementStatus);
+        console.log('chckedButtonElementStatus event', event);
+        if(chckedButtonElementStatus == false) {
+            chckedButtonElementStatus = !chckedButtonElementStatus;
+        }
 
+        if(checkedCheckboxEventStatus && chckedButtonElementStatus ) {
+            console.log('cool', 'CooL');
+        }
 
+        console.log('chckedButtonElementStatus after', chckedButtonElementStatus);
+    }
 
 
     function CreatorForObjectElement(dom, element, attribute, className, value, id, name) {
@@ -130,7 +142,7 @@
     };
 
     function checkboxCreator(objectIdElement){
-        // console.log('objectIdElement',objectIdElement );
+        console.log('objectIdElement',objectIdElement );
         let DOMIdEl = document.getElementById(objectIdElement.dom);
         let readyIdElement = document.createElement(objectIdElement.element);
         let attributeIdArray = objectIdElement.attribute;
@@ -141,6 +153,7 @@
         });
         readyIdElement.setAttribute("name", objectIdElement.name);
         readyIdElement.setAttribute("value", objectIdElement.value);
+        readyIdElement.setAttribute('id', `${'superId' + objectIdElement.id}`)
         readyIdElement.classList.add(objectIdElement.className);
         readyIdElement.innerHTML = objectIdElement.value;
         DOMIdEl.append(readyIdElement);
@@ -190,6 +203,7 @@
         checkboxElement.dom = element.id;
         checkboxElement.value = element.task;
         checkboxElement.name = element.task;
+        checkboxElement.id = checkboxElement.dom;
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
     }
