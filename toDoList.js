@@ -16,6 +16,7 @@
     let chckedButtonElementStatus = false;
     let checkedCheckboxEventStatus = false;
     let checkedCheckboxElement = null;
+    let toDoListFirstRender = true;
 
     let formElement = new CreatorForObjectElement(
         '.body',
@@ -119,12 +120,18 @@
                 if(element.id == checkedCheckboxElement) {
                     console.log('checkedCheckboxElement', checkedCheckboxElement);
                     console.log('element', element);
-                    toDoList.splice((Number(element.id) - 1), 1 );
+                   let toDoListChecked = toDoList.splice((Number(element.id) - 1), 1 );
+                    toDoCheckedList.push(toDoListChecked);
+                    console.log('toDoCheckedList', toDoCheckedList);
                     console.log('toDoList', toDoList);
                     chckedButtonElementStatus = !chckedButtonElementStatus;
                 }
             });
             console.log('cool', 'CooL');
+
+            toDoListFirstRender = false;
+            // window.location.reload()
+
         }
 
         console.log('chckedButtonElementStatus Final', chckedButtonElementStatus);
@@ -224,7 +231,7 @@
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
     }
-    );
+    )
 
 
 
