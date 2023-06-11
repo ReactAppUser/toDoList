@@ -1,2 +1,2 @@
 # toDoList
-My hope for better perspective in our life!
+Training project in pure JS. Task list.
