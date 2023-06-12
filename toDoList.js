@@ -93,15 +93,16 @@
          console.log('checkedCheckboxEventStatus event', event.target.id.slice(3));
          console.log('checkedCheckboxEventStatus before', checkedCheckboxEventStatus);
 
+
          if(checkedStatus = true){
              checkedCheckboxEventStatus = true;
+
+             console.log('checkedCheckboxEvent toDoList', toDoList);
 
              let checkedIdElement = event.target.id.slice(3);
              checkedCheckboxElement = checkedIdElement;
          }
          console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus);
-
-
 
          return checkedStatus;
     }
@@ -120,8 +121,11 @@
                 if(element.id == checkedCheckboxElement) {
                     console.log('checkedCheckboxElement', checkedCheckboxElement);
                     console.log('element', element);
-                   let toDoListChecked = toDoList.splice((Number(element.id) - 1), 1 );
-                    toDoCheckedList.push(toDoListChecked);
+                   // let toDoListChecked = toDoList.splice((Number(element.id) - 1), 1 );
+                   //  toDoCheckedList.push(toDoListChecked);
+                    let checkedElement = document.getElementById(checkedCheckboxElement);
+                    console.log('checkedElement', checkedElement);
+                    checkedElement.remove();
                     console.log('toDoCheckedList', toDoCheckedList);
                     console.log('toDoList', toDoList);
                     chckedButtonElementStatus = !chckedButtonElementStatus;
@@ -188,11 +192,12 @@
         console.log('task', task);
         console.log('taskEvent', event);
         let idIterator = 5;
+        let mimNumberForGeneratorCount = 4;
 
         let idIteratorIncrement = function(number){
            return ++number;
         };
-        while(idIterator < Number(toDoList.length)) {
+        while(idIterator <= Number(toDoList.length)||idIterator < mimNumberForGeneratorCount) {
             ++idIterator
         };
 
