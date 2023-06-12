@@ -114,6 +114,7 @@
             chckedButtonElementStatus = !chckedButtonElementStatus;
         }
 
+
         console.log('chckedButtonElementStatus CheckedButton active TRUE', chckedButtonElementStatus);
 
         if(checkedCheckboxEventStatus && chckedButtonElementStatus ) {
