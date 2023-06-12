@@ -54,6 +54,15 @@
         '',
     );
 
+    let ResetButtonElement = new CreatorForObjectElement(
+        '.form',
+        'input',
+        [['type', 'button'], ['value', 'Reset ToDoList Button'], ['onclick', 'resetButtonEvent(event)']],
+        'null',
+        'Reset checking button',
+        '',
+    );
+
     let liElement = new CreatorForObjectElement(
         '.toDoList',
         'li',
@@ -80,6 +89,13 @@
     elementCreator(inputButtonElement);
 
     elementCreator(chckedButtonElement);
+
+    elementCreator(ResetButtonElement);
+
+
+    function resetButtonEvent(event) {
+        mapForToDoList();
+    }
 
 
 
@@ -226,6 +242,7 @@
     });
 
 
+function mapForToDoList() {
     toDoList.map((element) => {
         // console.log('element', element);
         liElement.value = element.task;
@@ -238,8 +255,9 @@
         checkboxCreator(checkboxElement);
     }
     )
+};
 
-
+    mapForToDoList();
 
 
 
