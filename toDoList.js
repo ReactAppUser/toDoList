@@ -17,6 +17,7 @@
     let checkedCheckboxEventStatus = false;
     let checkedCheckboxElement = null;
     let toDoListFirstRender = true;
+    let resetButtonStatus = true;
 
     let formElement = new CreatorForObjectElement(
         '.body',
@@ -94,8 +95,12 @@
 
 
     function resetButtonEvent(event) {
-        mapForToDoList();
-    }
+        if (resetButtonStatus) {
+            mapForToDoList();
+            resetButtonStatus = !resetButtonStatus;
+        }
+
+    };
 
 
 
