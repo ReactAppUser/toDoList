@@ -118,10 +118,27 @@
          if(checkedStatus = true){
              checkedCheckboxEventStatus = true;
 
+
+
              console.log('checkedCheckboxEvent toDoList', toDoList);
 
              let checkedIdElement = event.target.id.slice(3);
              checkedCheckboxElement = checkedIdElement;
+             // console.log('checkedIdElement', checkedIdElement);
+
+
+             toDoList.map((element) => {
+
+                 if(element.id == checkedIdElement) {
+                     toDoCheckedList.push(element);
+                     console.log('toDoCheckedList', toDoCheckedList);
+
+                 };
+                        // console.log('tooDoList Element', element);
+                        // console.log('checkedIdElement', checkedIdElement);
+                 }
+             )
+
          }
          console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus);
 
@@ -139,10 +156,21 @@
         console.log('chckedButtonElementStatus CheckedButton active TRUE', chckedButtonElementStatus);
 
         if(checkedCheckboxEventStatus && chckedButtonElementStatus ) {
+
+            // let toDoCheckedListSplice = toDoCheckedList.splice((Number(element.id) - 1), 1 );
+            // console.log('toDoCheckedList.splice', toDoCheckedListSplice);
+
+
+
+
             toDoList.map((element) => {
                 if(element.id == checkedCheckboxElement) {
+
+
                     console.log('checkedCheckboxElement', checkedCheckboxElement);
                     console.log('element', element);
+
+
                    // let toDoListChecked = toDoList.splice((Number(element.id) - 1), 1 );
                    //  toDoCheckedList.push(toDoListChecked);
                     let checkedElement = document.getElementById(checkedCheckboxElement);
@@ -153,6 +181,17 @@
                     chckedButtonElementStatus = !chckedButtonElementStatus;
                 }
             });
+
+
+            toDoCheckedList.map((element) => {
+
+                console.log('toDoCheckedList ELEMENT', element);
+                let toDoCheckedListCheckedElement = document.getElementById(element.id);
+                console.log('toDoCheckedListCheckedElement ELEMENT', toDoCheckedListCheckedElement);
+                toDoCheckedListCheckedElement.remove();
+                chckedButtonElementStatus = !chckedButtonElementStatus;
+            })
+
             console.log('cool', 'CooL');
 
             toDoListFirstRender = false;
