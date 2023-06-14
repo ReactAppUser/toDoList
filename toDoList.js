@@ -7,9 +7,11 @@
         {task: 'Buy', id: '5'},
         ];
 
-    const toDoCheckedList = [
-
+    let toDoCheckedList = [
     ]
+
+
+    let DuplicateToDoList = toDoList;
 
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
@@ -58,7 +60,7 @@
     let ResetButtonElement = new CreatorForObjectElement(
         '.form',
         'input',
-        [['type', 'button'], ['value', 'Reset ToDoList Button'], ['onclick', 'resetButtonEvent(event)']],
+        [['type', 'button'], ['value', 'Reset all checked ToDoList Button'], ['onclick', 'resetButtonEvent(event)']],
         'null',
         'Reset checking button',
         '',
@@ -96,8 +98,9 @@
 
     function resetButtonEvent(event) {
         if (resetButtonStatus) {
-            mapForToDoList();
+            mapForToDoList(DuplicateToDoList);
             resetButtonStatus = !resetButtonStatus;
+            console.log('DuplicateToDoList', DuplicateToDoList);
         }
 
     };
@@ -145,7 +148,7 @@
          return checkedStatus;
     }
 
-    function checkedButtonEvent (event) {
+    function checkedButtonEvent(event) {
         console.log('chckedButtonElementStatus Start', chckedButtonElementStatus);
         // console.log('chckedButtonElementStatus event', event);
         if(chckedButtonElementStatus == false) {
@@ -162,34 +165,36 @@
 
 
 
-
-            toDoList.map((element) => {
-                if(element.id == checkedCheckboxElement) {
-
-
-                    console.log('checkedCheckboxElement', checkedCheckboxElement);
-                    console.log('element', element);
-
-
-                   // let toDoListChecked = toDoList.splice((Number(element.id) - 1), 1 );
-                   //  toDoCheckedList.push(toDoListChecked);
-                    let checkedElement = document.getElementById(checkedCheckboxElement);
-                    console.log('checkedElement', checkedElement);
-                    checkedElement.remove();
-                    console.log('toDoCheckedList', toDoCheckedList);
-                    console.log('toDoList', toDoList);
-                    chckedButtonElementStatus = !chckedButtonElementStatus;
-                }
-            });
+            //
+            // toDoList.map((element) => {
+            //     if(element.id == checkedCheckboxElement) {
+            //
+            //
+            //         console.log('checkedCheckboxElement', checkedCheckboxElement);
+            //         console.log('element', element);
+            //
+            //
+            //        // let toDoListChecked = toDoList.splice((Number(element.id) - 1), 1 );
+            //        //  toDoCheckedList.push(toDoListChecked);
+            //         let checkedElement = document.getElementById(checkedCheckboxElement);
+            //         console.log('checkedElement', checkedElement);
+            //         checkedElement.remove();
+            //         console.log('toDoCheckedList', toDoCheckedList);
+            //         console.log('toDoList', toDoList);
+            //         chckedButtonElementStatus = !chckedButtonElementStatus;
+            //     }
+            // });
 
 
             toDoCheckedList.map((element) => {
-
                 console.log('toDoCheckedList ELEMENT', element);
                 let toDoCheckedListCheckedElement = document.getElementById(element.id);
                 console.log('toDoCheckedListCheckedElement ELEMENT', toDoCheckedListCheckedElement);
                 toDoCheckedListCheckedElement.remove();
                 chckedButtonElementStatus = !chckedButtonElementStatus;
+                console.log('toDoCheckedList', toDoCheckedList);
+                toDoCheckedList = [];
+                console.log('toDoCheckedList after Splice', toDoCheckedList);
             })
 
             console.log('cool', 'CooL');
@@ -256,7 +261,7 @@
         let mimNumberForGeneratorCount = 4;
 
         let idIteratorIncrement = function(number){
-           return ++number;
+           return number;
         };
         while(idIterator <= Number(toDoList.length)||idIterator < mimNumberForGeneratorCount) {
             ++idIterator
@@ -286,8 +291,8 @@
     });
 
 
-function mapForToDoList() {
-    toDoList.map((element) => {
+function mapForToDoList(array) {
+    array.map((element) => {
         // console.log('element', element);
         liElement.value = element.task;
         liElement.id = element.id;
@@ -301,7 +306,7 @@ function mapForToDoList() {
     )
 };
 
-    mapForToDoList();
+    mapForToDoList(toDoList);
 
 
 
