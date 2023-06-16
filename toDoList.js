@@ -20,6 +20,7 @@
     let checkedCheckboxElement = null;
     let toDoListFirstRender = true;
     let resetButtonStatus = true;
+    let submitButtonIsDone = false;
 
     let formElement = new CreatorForObjectElement(
         '.body',
@@ -42,7 +43,7 @@
     let inputButtonElement = new CreatorForObjectElement(
         '.form',
         'input',
-        [['type', 'button'], ['value', 'submitButton']],
+        [['type', 'button'], ['value', 'submitButton'], ['onclick', 'submitButtonDone(event)']],
         'null',
         'Submit Button',
         '',
@@ -96,11 +97,29 @@
     elementCreator(ResetButtonElement);
 
 
+
+    function submitButtonDone(event) {
+
+        submitButtonIsDone = true;
+        console.log('submitButton submitButtonIsDone', submitButtonIsDone);
+        console.log('submitButton event', event);
+    }
+
     function resetButtonEvent(event) {
         if (resetButtonStatus) {
+
+            let idForNewResetElement = idGeneratorForAllElements();
+
+            console.log('DuplicateToDoList after', DuplicateToDoList);
+            DuplicateToDoList.forEach((element) => {
+                console.log('element', element);
+                    element.id = (++idForNewResetElement-1);
+                    console.log('element.id', element.id);
+            });
+
             mapForToDoList(DuplicateToDoList);
             resetButtonStatus = !resetButtonStatus;
-            console.log('DuplicateToDoList', DuplicateToDoList);
+            console.log('DuplicateToDoList before', DuplicateToDoList);
         }
 
     };
@@ -130,10 +149,12 @@
              // console.log('checkedIdElement', checkedIdElement);
 
 
+
              toDoList.map((element) => {
 
                  if(element.id == checkedIdElement) {
                      toDoCheckedList.push(element);
+
                      console.log('toDoCheckedList', toDoCheckedList);
 
                  };
@@ -253,34 +274,50 @@
         return DOMIdEl
     };
 
-    function pushEvent(task, event){
 
-        console.log('task', task);
-        console.log('taskEvent', event);
+    function idGeneratorForAllElements(){
+
         let idIterator = 5;
         let mimNumberForGeneratorCount = 4;
 
         let idIteratorIncrement = function(number){
-           return number;
+            return number;
         };
         while(idIterator <= Number(toDoList.length)||idIterator < mimNumberForGeneratorCount) {
             ++idIterator
         };
 
         let idGenerator = `${idIteratorIncrement(idIterator)}`;
-        console.log('idIteratorIncrement' , idIteratorIncrement(idIterator))
+        console.log('idIteratorIncrement' , idIteratorIncrement(idIterator));
 
+        return idGenerator
+    }
+
+
+    function pushEvent(task, event){
+
+        console.log('task', task);
+        console.log('taskEvent', event);
+
+        let GeneratedIdForNewElement = idGeneratorForAllElements();
 
         liElement.value = task;
-        liElement.id = idGenerator;
-        toDoList.push({task: task, id: idGenerator});
-        checkboxElement.dom = idGenerator;
-        checkboxElement.id = idGenerator;
+        liElement.id = GeneratedIdForNewElement;
+        toDoList.push({task: task, id: GeneratedIdForNewElement});
+        checkboxElement.dom = GeneratedIdForNewElement;
+        checkboxElement.id = GeneratedIdForNewElement;
         checkboxElement.value = task;
         checkboxElement.name = task;
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
         console.log('toDoList', toDoList.length);
+
+        if (submitButtonIsDone){
+            console.log('clearInput', 'CLEARED task');
+
+        }
+        submitButtonIsDone = false;
+        console.log('submitButtonIsDone', submitButtonIsDone);
     };
 
     document.addEventListener('keydown',(event) => {
