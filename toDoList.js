@@ -287,8 +287,8 @@
 
         return idGenerator
     }
-    
-    /*Added from Ssh*/
+
+    /*Added from Ssh 2*/
 
     document.addEventListener('keydown',(event) => {
         if( event.code === 'Enter') {
