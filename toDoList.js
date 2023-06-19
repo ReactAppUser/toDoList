@@ -15,12 +15,12 @@
 
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
-    let chckedButtonElementStatus = false;
+    let checkedButtonElementStatus = false;
     let checkedCheckboxEventStatus = false;
     let checkedCheckboxElement = null;
     let toDoListFirstRender = true;
     let resetButtonStatus = true;
-    let submitButtonIsDone = false;
+
 
     let formElement = new CreatorForObjectElement(
         '.body',
@@ -43,7 +43,7 @@
     let inputButtonElement = new CreatorForObjectElement(
         '.form',
         'input',
-        [['type', 'button'], ['value', 'submitButton'], ['onclick', 'submitButtonDone(event)']],
+        [['type', 'button'], ['value', 'submitButton']],
         'null',
         'Submit Button',
         '',
@@ -98,12 +98,7 @@
 
 
 
-    function submitButtonDone(event) {
 
-        submitButtonIsDone = true;
-        console.log('submitButton submitButtonIsDone', submitButtonIsDone);
-        console.log('submitButton event', event);
-    }
 
     function resetButtonEvent(event) {
         if (resetButtonStatus) {
@@ -170,16 +165,16 @@
     }
 
     function checkedButtonEvent(event) {
-        console.log('chckedButtonElementStatus Start', chckedButtonElementStatus);
-        // console.log('chckedButtonElementStatus event', event);
-        if(chckedButtonElementStatus == false) {
-            chckedButtonElementStatus = !chckedButtonElementStatus;
+        console.log('checkedButtonElementStatus Start', checkedButtonElementStatus);
+        // console.log('checkedButtonElementStatus event', event);
+        if(checkedButtonElementStatus == false) {
+            checkedButtonElementStatus = !checkedButtonElementStatus;
         }
 
 
-        console.log('chckedButtonElementStatus CheckedButton active TRUE', chckedButtonElementStatus);
+        console.log('checkedButtonElementStatus CheckedButton active TRUE', checkedButtonElementStatus);
 
-        if(checkedCheckboxEventStatus && chckedButtonElementStatus ) {
+        if(checkedCheckboxEventStatus && checkedButtonElementStatus ) {
 
             // let toDoCheckedListSplice = toDoCheckedList.splice((Number(element.id) - 1), 1 );
             // console.log('toDoCheckedList.splice', toDoCheckedListSplice);
@@ -202,7 +197,7 @@
             //         checkedElement.remove();
             //         console.log('toDoCheckedList', toDoCheckedList);
             //         console.log('toDoList', toDoList);
-            //         chckedButtonElementStatus = !chckedButtonElementStatus;
+            //         checkedButtonElementStatus = !checkedButtonElementStatus;
             //     }
             // });
 
@@ -212,7 +207,7 @@
                 let toDoCheckedListCheckedElement = document.getElementById(element.id);
                 console.log('toDoCheckedListCheckedElement ELEMENT', toDoCheckedListCheckedElement);
                 toDoCheckedListCheckedElement.remove();
-                chckedButtonElementStatus = !chckedButtonElementStatus;
+                checkedButtonElementStatus = !checkedButtonElementStatus;
                 console.log('toDoCheckedList', toDoCheckedList);
                 toDoCheckedList = [];
                 console.log('toDoCheckedList after Splice', toDoCheckedList);
@@ -225,7 +220,7 @@
 
         }
 
-        console.log('chckedButtonElementStatus Final', chckedButtonElementStatus);
+        console.log('checkedButtonElementStatus Final', checkedButtonElementStatus);
     }
 
 
@@ -294,10 +289,17 @@
     }
 
 
+    document.addEventListener('keydown',(event) => {
+        if( event.code === 'Enter') {
+            event.preventDefault();
+            pushEvent(event.target.value);
+        }
+    });
+
     function pushEvent(task, event){
 
         console.log('task', task);
-        console.log('taskEvent', event);
+        console.log('taskEvent', event.target.value);
 
         let GeneratedIdForNewElement = idGeneratorForAllElements();
 
@@ -311,21 +313,10 @@
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
         console.log('toDoList', toDoList.length);
-
-        if (submitButtonIsDone){
-            console.log('clearInput', 'CLEARED task');
-
-        }
-        submitButtonIsDone = false;
-        console.log('submitButtonIsDone', submitButtonIsDone);
+        event.target.value = '';
     };
 
-    document.addEventListener('keydown',(event) => {
-        if( event.code === 'Enter') {
-            event.preventDefault();
-            pushEvent(event.target.value);
-        }
-    });
+
 
 
 function mapForToDoList(array) {
