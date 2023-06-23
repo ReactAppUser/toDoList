@@ -11,7 +11,7 @@
     ]
 
 
-    let DuplicateToDoList = toDoList;
+    let DuplicateToDoList = toDoCheckedList;
 
     let elForToDoList = document.querySelector('.toDoList');
     let elBody = document.querySelector('.body');
@@ -105,16 +105,16 @@
 
             let idForNewResetElement = idGeneratorForAllElements();
 
-            console.log('DuplicateToDoList after', DuplicateToDoList);
+            // console.log('toDoCheckedList after', DuplicateToDoList);
             DuplicateToDoList.forEach((element) => {
-                console.log('element', element);
-                    element.id = (++idForNewResetElement-1);
-                    console.log('element.id', element.id);
+                // console.log('element', element);
+                    // element.id = (++idForNewResetElement-1);
+                    // console.log('element.id', element.id);
             });
 
             mapForToDoList(DuplicateToDoList);
-            resetButtonStatus = !resetButtonStatus;
-            console.log('DuplicateToDoList before', DuplicateToDoList);
+            // resetButtonStatus = !resetButtonStatus;
+            // console.log('toDoCheckedList before', DuplicateToDoList);
         }
 
     };
@@ -126,10 +126,10 @@
 
         let checkedStatus = event.target.checked;
 
-         console.log('checked', checkedStatus);
-         console.log('checkedCheckboxEventStatus event target', event);
-         console.log('checkedCheckboxEventStatus event', event.target.id.slice(3));
-         console.log('checkedCheckboxEventStatus before', checkedCheckboxEventStatus);
+         // console.log('checked', checkedStatus);
+         // console.log('checkedCheckboxEventStatus event target', event);
+         // console.log('checkedCheckboxEventStatus event', event.target.id.slice(3));
+         // console.log('checkedCheckboxEventStatus before', checkedCheckboxEventStatus);
 
 
          if(checkedStatus = true){
@@ -144,35 +144,51 @@
              // console.log('checkedIdElement', checkedIdElement);
 
 
+             let toDoCheckedTask = toDoCheckedList.map((checkedElement)=>{
+               let task =  checkedElement.task;
+                 // console.log('First toDoCheckedList element.task',   checkedElement.task);
+                 // console.log('First toDoCheckedList checkedElement.task',   checkedElement.task);
+                 // if( checkedElement.task == checkedElement.task) {
+                 //     // toDoCheckedList.splice(checkedElement, 1);
+                 //     console.log('second toDoCheckedList',   toDoCheckedList);
+                 //     // toDoCheckedList.pop(checkedElement);
+                 //     console.log('three toDoCheckedList', toDoCheckedList);
+                 // };
+
+                return console.log('task', task);
+
+             });
+
 
              toDoList.map((element) => {
 
-                 if(element.id == checkedIdElement) {
+                 if(element.id == checkedIdElement && element.task !== toDoCheckedTask) {
+                     console.log('toDoCheckedTask', toDoCheckedTask);
+                     console.log('element.id', element.id);
+                     console.log('element.task', element.task);
                      toDoCheckedList.push(element);
-
-                     console.log('toDoCheckedList', toDoCheckedList);
+                     console.log('First toDoCheckedList',   toDoCheckedList);
 
                  };
-                        // console.log('tooDoList Element', element);
-                        // console.log('checkedIdElement', checkedIdElement);
-                 }
-             )
+                 // console.log('tooDoList Element', element);
+                    // console.log('checkedIdElement', checkedIdElement);
+                 });
 
-         }
-         console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus);
+         };
+         // console.log ('checkedCheckboxEventStatus after', checkedCheckboxEventStatus);
 
          return checkedStatus;
-    }
+    };
 
     function checkedButtonEvent(event) {
-        console.log('checkedButtonElementStatus Start', checkedButtonElementStatus);
+        // console.log('checkedButtonElementStatus Start', checkedButtonElementStatus);
         // console.log('checkedButtonElementStatus event', event);
         if(checkedButtonElementStatus == false) {
             checkedButtonElementStatus = !checkedButtonElementStatus;
         }
 
 
-        console.log('checkedButtonElementStatus CheckedButton active TRUE', checkedButtonElementStatus);
+        // console.log('checkedButtonElementStatus CheckedButton active TRUE', checkedButtonElementStatus);
 
         if(checkedCheckboxEventStatus && checkedButtonElementStatus ) {
 
@@ -203,24 +219,24 @@
 
 
             toDoCheckedList.map((element) => {
-                console.log('toDoCheckedList ELEMENT', element);
+                // console.log('toDoCheckedList ELEMENT', element);
                 let toDoCheckedListCheckedElement = document.getElementById(element.id);
-                console.log('toDoCheckedListCheckedElement ELEMENT', toDoCheckedListCheckedElement);
+                // console.log('toDoCheckedListCheckedElement ELEMENT', toDoCheckedListCheckedElement);
                 toDoCheckedListCheckedElement.remove();
                 checkedButtonElementStatus = !checkedButtonElementStatus;
-                console.log('toDoCheckedList', toDoCheckedList);
+                // console.log('toDoCheckedList', toDoCheckedList);
                 toDoCheckedList = [];
-                console.log('toDoCheckedList after Splice', toDoCheckedList);
+                // console.log('toDoCheckedList after Splice', toDoCheckedList);
             })
 
-            console.log('cool', 'CooL');
+            // console.log('cool', 'CooL');
 
             toDoListFirstRender = false;
             // window.location.reload()
 
         }
 
-        console.log('checkedButtonElementStatus Final', checkedButtonElementStatus);
+        // console.log('checkedButtonElementStatus Final', checkedButtonElementStatus);
     }
 
 
@@ -251,7 +267,7 @@
     };
 
     function checkboxCreator(objectIdElement){
-        console.log('objectIdElement',objectIdElement );
+        // console.log('objectIdElement',objectIdElement );
         let DOMIdEl = document.getElementById(objectIdElement.dom);
         let readyIdElement = document.createElement(objectIdElement.element);
         let attributeIdArray = objectIdElement.attribute;
@@ -283,7 +299,7 @@
         };
 
         let idGenerator = `${idIteratorIncrement(idIterator)}`;
-        console.log('idIteratorIncrement' , idIteratorIncrement(idIterator));
+        // console.log('idIteratorIncrement' , idIteratorIncrement(idIterator));
 
         return idGenerator
     }
@@ -299,8 +315,8 @@
 
     function pushEvent(task, event){
 
-        console.log('task', task);
-        console.log('taskEvent', event.target.value);
+        // console.log('task', task);
+        // console.log('taskEvent', event.target.value);
 
         let GeneratedIdForNewElement = idGeneratorForAllElements();
 
@@ -313,7 +329,7 @@
         checkboxElement.name = task;
         elementCreator(liElement);
         checkboxCreator(checkboxElement);
-        console.log('toDoList', toDoList.length);
+        // console.log('toDoList', toDoList.length);
         event.target.value = '';
     };
 
