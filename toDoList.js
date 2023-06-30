@@ -6,11 +6,15 @@ const defaultTasks = [
     {text: 'Buy', id: 'task5'},
 ];
 
+let idCount = 5;
+
+
 const todoList = [];
 const doneList = [];
 
 const changeTaskStatus = (taskElement) => {
     if (taskElement.checked) {
+        console.log('taskElement', taskElement);
         doneList.push(taskElement);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
         // https://stackoverflow.com/questions/55532767/how-to-find-an-element-by-data-selector-in-an-array-of-html-dom-objects-using-ja
@@ -24,6 +28,8 @@ const changeTaskStatus = (taskElement) => {
         // same shit
     }
 }
+
+
 
 const createTask = (id, text) => {
     const taskElement = document.createElement("div");
@@ -39,6 +45,24 @@ const createTask = (id, text) => {
     })
     // deleteButton.addEventListener
 }
+
+
+let addNewTaskElementToField = () => {
+    let addButton = document.querySelector('#addNewTaskField');
+
+    let idTaskNumber = () => {
+        return ++idCount;
+    }
+
+    console.log('addButton', addButton);
+    addButton.addEventListener('change', (event) => {
+        console.log('event', event.target.value);
+        todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
+        console.log('todoList', todoList);
+    })
+}
+
+addNewTaskElementToField();
 
 defaultTasks.map(task => createTask(task.id, task.text));
 
