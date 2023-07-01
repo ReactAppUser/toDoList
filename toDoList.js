@@ -17,8 +17,11 @@ const changeTaskStatus = (taskElement) => {
         console.log('taskElement', taskElement);
         doneList.push(taskElement);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
+        console.log('elem', elem);
         // https://stackoverflow.com/questions/55532767/how-to-find-an-element-by-data-selector-in-an-array-of-html-dom-objects-using-ja
         todoList.splice(todoList.findIndex(elem), 0);
+        console.log('todoList', todoList);
+        console.log('doneList', doneList);
         // remove from display in old list
         // add to display in new list
     } else {
@@ -33,23 +36,28 @@ const changeTaskStatus = (taskElement) => {
 
 const createTask = (id, text) => {
     const taskElement = document.createElement("div");
+    taskElement.setAttribute('id', `${'div_'+id}`)
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
     const checkBox = taskElement.firstChild;
-    // const deleteButton = не taskElement.firstChild; вибирати по іншому
+    const deleteButton = taskElement.lastChild;
     todoList.push(taskElement);
     document.querySelector('#toDoList').append(taskElement);
 
     checkBox.addEventListener('click', (event) => {
-        console.log(event);
+        console.log('CheckedCheckbox', event.target);
         changeTaskStatus(event.target);
     })
-    // deleteButton.addEventListener
+    deleteButton.addEventListener('click', (event) => {
+        console.log('deleteButton', event);
+        taskElement.remove();
+    })
 }
+
+
 
 
 let addNewTaskElementToField = () => {
     let addButton = document.querySelector('#addNewTaskField');
-
     let idTaskNumber = () => {
         return ++idCount;
     }
@@ -63,6 +71,11 @@ let addNewTaskElementToField = () => {
 }
 
 addNewTaskElementToField();
+
+
+let deleteTaskElementField = () => {
+
+}
 
 defaultTasks.map(task => createTask(task.id, task.text));
 
