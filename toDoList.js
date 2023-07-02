@@ -15,19 +15,30 @@ const doneList = [];
 const changeTaskStatus = (taskElement) => {
     if (taskElement.checked) {
         console.log('taskElement', taskElement);
-        doneList.push(taskElement);
+        doneList.push(taskElement.parentElement);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
+        elem.remove();
         console.log('elem', elem);
         // https://stackoverflow.com/questions/55532767/how-to-find-an-element-by-data-selector-in-an-array-of-html-dom-objects-using-ja
-        todoList.splice(todoList.findIndex(elem), 0);
-        console.log('todoList', todoList);
+        // todoList.splice(todoList.findIndex(elem), 0);
         console.log('doneList', doneList);
+        console.log('todoList after', todoList);
+        let doneListElement = document.querySelector('#doneList');
+        doneList.map(function(task){
+            console.log('doneListElement', doneListElement);
+            console.log('todoList before', todoList);
+            console.log('task', task);
+
+            return doneListElement.prepend(task);
+        });
         // remove from display in old list
         // add to display in new list
     } else {
         todoList.push(taskElement);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-        doneList.splice(doneList.findIndex(elem), 0);
+
+        console.log('elem 2', elem)
+        // doneList.splice(doneList.findIndex(elem), 0);
         // same shit
     }
 }
@@ -55,7 +66,6 @@ const createTask = (id, text) => {
 
 
 
-
 let addNewTaskElementToField = () => {
     let addButton = document.querySelector('#addNewTaskField');
     let idTaskNumber = () => {
@@ -72,12 +82,15 @@ let addNewTaskElementToField = () => {
 
 addNewTaskElementToField();
 
+//
+// let deleteTaskElementField = () => {
+//
+// }
 
-let deleteTaskElementField = () => {
 
-}
 
-defaultTasks.map(task => createTask(task.id, task.text));
+
+defaultTasks.map(task => createTask(task.id, task.text ));
 
 // add event listener which use createTask() on ADD click
 // const addNewListener (input) => {
