@@ -14,6 +14,9 @@ const doneList = [];
 
 const changeTaskStatus = (taskElement) => {
     if (taskElement.checked) {
+
+        console.log('taskElement', taskElement.checked);
+
         console.log('taskElement', taskElement);
         doneList.push(taskElement.parentElement);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
@@ -28,15 +31,16 @@ const changeTaskStatus = (taskElement) => {
             console.log('doneListElement', doneListElement);
             console.log('todoList before', todoList);
             console.log('task', task);
-
             return doneListElement.prepend(task);
+            
         });
         // remove from display in old list
         // add to display in new list
     } else {
         todoList.push(taskElement);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-
+        let toDoListElement = document.querySelector('#toDoList');
+        toDoListElement.append(elem);
         console.log('elem 2', elem)
         // doneList.splice(doneList.findIndex(elem), 0);
         // same shit
@@ -53,11 +57,12 @@ const createTask = (id, text) => {
     const deleteButton = taskElement.lastChild;
     todoList.push(taskElement);
     document.querySelector('#toDoList').append(taskElement);
-
+    //
     checkBox.addEventListener('click', (event) => {
         console.log('CheckedCheckbox', event.target);
         changeTaskStatus(event.target);
     })
+
     deleteButton.addEventListener('click', (event) => {
         console.log('deleteButton', event);
         taskElement.remove();
@@ -77,17 +82,11 @@ let addNewTaskElementToField = () => {
         console.log('event', event.target.value);
         todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
         console.log('todoList', todoList);
+        event.target.value = '';
     })
 }
 
 addNewTaskElementToField();
-
-//
-// let deleteTaskElementField = () => {
-//
-// }
-
-
 
 
 defaultTasks.map(task => createTask(task.id, task.text ));
