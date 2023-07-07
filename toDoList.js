@@ -13,47 +13,58 @@ let canChecked = true;
 const todoList = [];
 const doneList = [];
 
+
+
+
+
+
+
 const changeTaskStatus = (taskElement) => {
 
-
-
-
     if (taskElement.checked) {
-        // console.log('taskElement', taskElement);
+        console.log('taskElement', taskElement);
         doneList.push(taskElement.parentElement);
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-        console.log('elem after', elem.getAttribute('taskstatus'));
-        elem.setAttribute('taskstatus', 'true');
-        console.log('elem before', elem.getAttribute('taskstatus'));
-        let elementStatus = elem.getAttribute('taskstatus');
+        // console.log('elem after', elem.getAttribute('taskstatus'));
+        // elem.setAttribute('taskstatus', 'true');
+        // console.log('elem before', elem.getAttribute('taskstatus'));
+        // taskElement.checked = true;
         elem.remove();
 
         // https://stackoverflow.com/questions/55532767/how-to-find-an-element-by-data-selector-in-an-array-of-html-dom-objects-using-ja
 
-        console.log('doneList', doneList);
-        console.log('todoList after', todoList);
+        console.log('doneList 1', doneList);
+        console.log('todoList 1', todoList);
         let doneListElement = document.querySelector('#doneList');
         doneList.map(function(task){
             doneListElement.prepend(task);
             // console.log('doneListElement', doneListElement);
-            console.log('task', task);
-            console.log('todoList.indexOf(task.id)', todoList.indexOf(task));
-            console.log('todoList before', todoList);
-            if (elementStatus) {
-                elem.setAttribute('taskstatus', 'false');
-                console.log('elementStatus', elementStatus);
-            // const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-            // let toDoListElement = document.querySelector('#toDoList');
-            // // setElementStatus = false;
-            // toDoListElement.append(elem);
-            };
+            // console.log('task', task);
+            // console.log('todoList.indexOf(task.id)', todoList.indexOf(task));
+            // console.log('todoList before', todoList);
+
+            // if (elem.getAttribute('taskstatus')) {
+            //
+            //     // taskElement.addEventListener('click', (event) => {
+            //     //     const elem = document.querySelector(`#${taskElement.id}`).parentElement;
+            //     //     let toDoListElement = document.querySelector('#toDoList');
+            //     //     // setElementStatus = false;
+            //     //     console.log('returnCheckedParagraphOnToDoList', 'returnCheckedParagraphOnToDoList');
+            //     //     toDoListElement.append(elem);
+            //     // });
+            //     todoList.push(taskElement);
+            //     elem.setAttribute('taskstatus', 'false');
+            //     // taskElement.checked = false;
+            //     console.log('elementStatus', (elem.getAttribute('taskstatus')));
+            //
+            //
+            // };
 
             return doneListElement;
             // if (doneList.length == 0) {
             //     canChecked = false;
             // }
-
         });
         // remove from display in old list
         // add to display in new list
@@ -62,7 +73,9 @@ const changeTaskStatus = (taskElement) => {
         // let toDoListElement = document.querySelector('#toDoList');
         // toDoListElement.append(elem);
         todoList.push(taskElement);
+
         // taskElement.checked = false;
+
 
 
         // if (canChecked) {
@@ -72,8 +85,21 @@ const changeTaskStatus = (taskElement) => {
         // doneList.splice(doneList.findIndex(elem), 0);
         // same shit
     }
-}
 
+    if (taskElement.checked == false) {
+        console.log('taskElement.checked == false', 'askElement.checked == false');
+        console.log('doneList 2', doneList);
+        console.log('todoList 2', todoList);
+        const elem = document.querySelector(`#${taskElement.id}`).parentElement;
+        let toDoListElement = document.querySelector('#toDoList');
+        toDoListElement.append(elem);
+        doneList.splice(doneList.indexOf(taskElement, 0));
+        console.log('doneList 3', doneList);
+        //
+        //
+        //
+    }
+}
 
 
 const createTask = (id, text) => {
