@@ -7,7 +7,7 @@ const defaultTasks = [
 ];
 
 let idCount = 5;
-let canChecked = true;
+let addTask = false;
 
 
 const todoList = [];
@@ -22,7 +22,7 @@ const doneList = [];
 const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
-        console.log('taskElement', taskElement);
+        // console.log('taskElement', taskElement);
         doneList.push(taskElement.parentElement);
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
@@ -34,8 +34,8 @@ const changeTaskStatus = (taskElement) => {
 
         // https://stackoverflow.com/questions/55532767/how-to-find-an-element-by-data-selector-in-an-array-of-html-dom-objects-using-ja
 
-        console.log('doneList 1', doneList);
-        console.log('todoList 1', todoList);
+        // console.log('doneList 1', doneList);
+        // console.log('todoList 1', todoList);
         let doneListElement = document.querySelector('#doneList');
         doneList.map(function(task){
             doneListElement.prepend(task);
@@ -87,14 +87,14 @@ const changeTaskStatus = (taskElement) => {
     }
 
     if (taskElement.checked == false) {
-        console.log('taskElement.checked == false', 'askElement.checked == false');
-        console.log('doneList 2', doneList);
-        console.log('todoList 2', todoList);
+        // console.log('taskElement.checked == false', 'askElement.checked == false');
+        // console.log('doneList 2', doneList);
+        // console.log('todoList 2', todoList);
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
         let toDoListElement = document.querySelector('#toDoList');
         toDoListElement.append(elem);
         doneList.splice(doneList.indexOf(taskElement, 0));
-        console.log('doneList 3', doneList);
+        // console.log('doneList 3', doneList);
         //
         //
         //
@@ -114,7 +114,7 @@ const createTask = (id, text) => {
 
     //
     checkBox.addEventListener('click', (event) => {
-        // console.log('CheckedCheckbox', event.target);
+        console.log('CheckedCheckbox', event.target);
         changeTaskStatus(event.target);
     })
 
@@ -126,23 +126,22 @@ const createTask = (id, text) => {
 
 
 
-let addNewTaskElementToField = () => {
-    let addButton = document.querySelector('#addNewTaskField');
-    let idTaskNumber = () => {
-        return ++idCount;
-    }
-
-    console.log('addButton', addButton);
-    addButton.addEventListener('change', (event) => {
-        // console.log('event', event.target.value);
-        todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
-        // console.log('todoList', todoList);
-        event.target.value = '';
-    })
+let addNewTaskElementToField = document.querySelector('#addNewTaskField');
+let idTaskNumber = () => {
+    return ++idCount;
 }
 
-addNewTaskElementToField();
-
+addNewTaskElementToField.addEventListener('change', (event)=> {
+        console.log('addNewTaskElementToField event', event.target.value);
+            todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
+            todoList.map((element) => {
+                if(element === undefined) {
+                    todoList.splice(todoList.indexOf(element, 0),1);
+                }
+            })
+        console.log('todoList', todoList);
+        event.target.value = '';
+    })
 
 defaultTasks.map(task => createTask(task.id, task.text ));
 
