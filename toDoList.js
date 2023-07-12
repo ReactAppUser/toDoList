@@ -1,12 +1,12 @@
 const defaultTasks = [
-    {text: 'Hello', id: 'task1', taskstatus: false, },
-    {text: 'What Is Your Name?', id: 'task2', taskstatus: false, },
-    {text: 'How are you?', id: 'task3', taskstatus: false, },
-    {text: 'What is you like?', id: 'task4', taskstatus: false, },
-    {text: 'Buy', id: 'task5', taskstatus: false, },
+    {text: 'Hello', id: 'task0', taskstatus: false, },
+    {text: 'What Is Your Name?', id: 'task1', taskstatus: false, },
+    {text: 'How are you?', id: 'task2', taskstatus: false, },
+    {text: 'What is you like?', id: 'task3', taskstatus: false, },
+    {text: 'Buy', id: 'task4', taskstatus: false, },
 ];
 
-let idCount = 5;
+let idCount = 4;
 let addTask = false;
 
 
@@ -114,13 +114,41 @@ const createTask = (id, text) => {
 
     //
     checkBox.addEventListener('click', (event) => {
-        console.log('CheckedCheckbox', event.target);
+        // console.log('CheckedCheckbox', event.target);
         changeTaskStatus(event.target);
     })
 
     deleteButton.addEventListener('click', (event) => {
         // console.log('deleteButton', event);
         taskElement.remove();
+        let taskElementForDeleted = taskElement.id;
+        console.log('task element delete button', taskElementForDeleted);
+        todoList.map(task => {
+            if (task.id == taskElementForDeleted) {
+                let deletedTaskId = task.id.slice(8,9);
+                todoList.splice(deletedTaskId,1);
+                console.log('task', task.id);
+            }
+        });
+
+        doneList.map(taskDone => {
+            if (taskDone.id == taskElementForDeleted) {
+                let deletedTaskDoneId = taskDone.id.slice(8, 9);
+                doneList.splice(deletedTaskDoneId, 1);
+                console.log('taskDone', taskDone.id);
+            }
+        });
+
+        console.log('toDoList in delete button after',  todoList);
+        console.log('doneList in delete button after',  doneList);
+        if(todoList.length == 0 && doneList.length == 0) {
+
+            console.log('toDoList if Zero', 'toDoList if Zero');
+            defaultTasks.map(task => createTask(task.id, task.text ));
+
+        }
+
+        console.log('toDoList in delete button before',  todoList);
     })
 }
 
@@ -132,18 +160,23 @@ let idTaskNumber = () => {
 }
 
 addNewTaskElementToField.addEventListener('change', (event)=> {
-        console.log('addNewTaskElementToField event', event.target.value);
+        // console.log('addNewTaskElementToField event', event.target.value);
             todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
             todoList.map((element) => {
                 if(element === undefined) {
                     todoList.splice(todoList.indexOf(element, 0),1);
                 }
             })
-        console.log('todoList', todoList);
+        // console.log('todoList', todoList);
         event.target.value = '';
     })
 
+
+console.log('toDoList before', todoList);
 defaultTasks.map(task => createTask(task.id, task.text ));
+console.log('toDoList after', todoList);
+
+
 
 // add event listener which use createTask() on ADD click
 // const addNewListener (input) => {
