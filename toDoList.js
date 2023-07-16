@@ -8,73 +8,42 @@ const defaultTasks = [
 
 let idCount = 4;
 let addTask = false;
-
+let addElementToDoneList = true;
 
 const todoList = [];
 const doneList = [];
 
-
-
-
-
-
-
 const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
-        // console.log('taskElement', taskElement);
-        doneList.push(taskElement.parentElement);
+
+       if (addElementToDoneList == true) {
+           doneList.push(taskElement.parentElement);
+           addElementToDoneList =true;
+           console.log('doneList push', doneList);
+       }
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-        // console.log('elem after', elem.getAttribute('taskstatus'));
-        // elem.setAttribute('taskstatus', 'true');
-        // console.log('elem before', elem.getAttribute('taskstatus'));
-        // taskElement.checked = true;
+
         elem.remove();
 
         // https://stackoverflow.com/questions/55532767/how-to-find-an-element-by-data-selector-in-an-array-of-html-dom-objects-using-ja
 
-        // console.log('doneList 1', doneList);
-        // console.log('todoList 1', todoList);
+
         let doneListElement = document.querySelector('#doneList');
         doneList.map(function(task){
             doneListElement.prepend(task);
-            // console.log('doneListElement', doneListElement);
-            // console.log('task', task);
-            // console.log('todoList.indexOf(task.id)', todoList.indexOf(task));
-            // console.log('todoList before', todoList);
 
-            // if (elem.getAttribute('taskstatus')) {
-            //
-            //     // taskElement.addEventListener('click', (event) => {
-            //     //     const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-            //     //     let toDoListElement = document.querySelector('#toDoList');
-            //     //     // setElementStatus = false;
-            //     //     console.log('returnCheckedParagraphOnToDoList', 'returnCheckedParagraphOnToDoList');
-            //     //     toDoListElement.append(elem);
-            //     // });
-            //     todoList.push(taskElement);
-            //     elem.setAttribute('taskstatus', 'false');
-            //     // taskElement.checked = false;
-            //     console.log('elementStatus', (elem.getAttribute('taskstatus')));
-            //
-            //
-            // };
 
             return doneListElement;
-            // if (doneList.length == 0) {
-            //     canChecked = false;
-            // }
+
         });
         // remove from display in old list
         // add to display in new list
     } else {
-        // const elem = document.querySelector(`#${taskElement.id}`).parentElement;
-        // let toDoListElement = document.querySelector('#toDoList');
-        // toDoListElement.append(elem);
+
         todoList.push(taskElement);
 
-        // taskElement.checked = false;
 
 
 
@@ -87,17 +56,12 @@ const changeTaskStatus = (taskElement) => {
     }
 
     if (taskElement.checked == false) {
-        // console.log('taskElement.checked == false', 'askElement.checked == false');
-        // console.log('doneList 2', doneList);
-        // console.log('todoList 2', todoList);
+
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
         let toDoListElement = document.querySelector('#toDoList');
         toDoListElement.append(elem);
         doneList.splice(doneList.indexOf(taskElement, 0));
-        // console.log('doneList 3', doneList);
-        //
-        //
-        //
+
     }
 }
 
@@ -119,28 +83,40 @@ const createTask = (id, text) => {
     })
 
     deleteButton.addEventListener('click', (event) => {
-        // console.log('deleteButton', event);
+        addElementToDoneList = false;
+        console.log('addElementToDoneList', addElementToDoneList);
         taskElement.remove();
         let taskElementForDeleted = taskElement.id;
         console.log('task element delete button', taskElementForDeleted);
+
         todoList.map(task => {
             if (task.id == taskElementForDeleted) {
                 let deletedTaskId = task.id.slice(8,9);
-                todoList.splice(deletedTaskId,1);
-                console.log('task', task.id);
+                todoList.splice(deletedTaskId,1, '');
+
+                console.group('toDoList');
+                console.log('task task.id', task.id);
+                console.log('task deletedTaskId', deletedTaskId);
+                console.log('toDoList in delete button before',  todoList);
+                console.groupEnd();
             }
         });
 
         doneList.map(taskDone => {
             if (taskDone.id == taskElementForDeleted) {
                 let deletedTaskDoneId = taskDone.id.slice(8, 9);
-                doneList.splice(deletedTaskDoneId, 1);
-                console.log('taskDone', taskDone.id);
+                doneList.splice(deletedTaskDoneId, 1, '');
+                console.group('doneList');
+                console.log('taskDone taskDone.id', taskDone.id);
+                console.log('taskDone taskElementForDeleted', taskElementForDeleted);
+                console.log('taskDone doneList',  doneList);
+                console.groupEnd();
             }
         });
 
-        console.log('toDoList in delete button after',  todoList);
-        console.log('doneList in delete button after',  doneList);
+        console.log('Done list after', doneList)
+
+
         if(todoList.length == 0 && doneList.length == 0) {
 
             console.log('toDoList if Zero', 'toDoList if Zero');
@@ -148,7 +124,8 @@ const createTask = (id, text) => {
 
         }
 
-        console.log('toDoList in delete button before',  todoList);
+
+
     })
 }
 
@@ -160,14 +137,12 @@ let idTaskNumber = () => {
 }
 
 addNewTaskElementToField.addEventListener('change', (event)=> {
-        // console.log('addNewTaskElementToField event', event.target.value);
             todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
             todoList.map((element) => {
                 if(element === undefined) {
                     todoList.splice(todoList.indexOf(element, 0),1);
                 }
             })
-        // console.log('todoList', todoList);
         event.target.value = '';
     })
 
