@@ -32,21 +32,16 @@ const changeTaskStatus = (taskElement) => {
 
         let doneListElement = document.querySelector('#doneList');
         doneList.map(function(task){
+
+            console.log('doneList prepend', doneList);
             doneListElement.prepend(task);
 
-
             return doneListElement;
-
         });
         // remove from display in old list
         // add to display in new list
     } else {
-
         todoList.push(taskElement);
-
-
-
-
         // if (canChecked) {
         //
         // }
@@ -93,7 +88,11 @@ const createTask = (id, text) => {
             if (task.id == taskElementForDeleted) {
                 let deletedTaskId = task.id.slice(8,9);
                 todoList.splice(deletedTaskId,1, '');
-
+                todoList.map(newTask => {
+                    if (newTask){
+                       console.log('newTask', newTask);
+                    }
+                });
                 console.group('toDoList');
                 console.log('task task.id', task.id);
                 console.log('task deletedTaskId', deletedTaskId);
@@ -102,10 +101,20 @@ const createTask = (id, text) => {
             }
         });
 
+
+
         doneList.map(taskDone => {
             if (taskDone.id == taskElementForDeleted) {
                 let deletedTaskDoneId = taskDone.id.slice(8, 9);
                 doneList.splice(deletedTaskDoneId, 1, '');
+
+                doneList.map(newDoneTask => {
+                    if (newDoneTask !== ''){
+                        newDoneTask = 'hello';
+                        console.log('newDoneTask', newDoneTask);
+                    }
+                });
+
                 console.group('doneList');
                 console.log('taskDone taskDone.id', taskDone.id);
                 console.log('taskDone taskElementForDeleted', taskElementForDeleted);
