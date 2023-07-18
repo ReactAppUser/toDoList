@@ -8,7 +8,6 @@ const defaultTasks = [
 
 let idCount = 4;
 let addTask = false;
-let addElementToDoneList = true;
 
 const todoList = [];
 const doneList = [];
@@ -17,11 +16,8 @@ const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
 
-       if (addElementToDoneList == true) {
            doneList.push(taskElement.parentElement);
-           addElementToDoneList =true;
-           console.log('doneList push', doneList);
-       }
+
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
 
@@ -33,7 +29,7 @@ const changeTaskStatus = (taskElement) => {
         let doneListElement = document.querySelector('#doneList');
         doneList.map(function(task){
 
-            console.log('doneList prepend', doneList);
+            // console.log('doneList prepend', doneList);
             doneListElement.prepend(task);
 
             return doneListElement;
@@ -42,9 +38,7 @@ const changeTaskStatus = (taskElement) => {
         // add to display in new list
     } else {
         todoList.push(taskElement);
-        // if (canChecked) {
-        //
-        // }
+
         // console.log('elem 2', elem)
         // doneList.splice(doneList.findIndex(elem), 0);
         // same shit
@@ -73,72 +67,38 @@ const createTask = (id, text) => {
 
     //
     checkBox.addEventListener('click', (event) => {
-        // console.log('CheckedCheckbox', event.target);
         changeTaskStatus(event.target);
     })
 
     deleteButton.addEventListener('click', (event) => {
-        addElementToDoneList = false;
-        console.log('addElementToDoneList', addElementToDoneList);
         taskElement.remove();
         let taskElementForDeleted = taskElement.id;
-        console.log('task element delete button', taskElementForDeleted);
 
         todoList.map(task => {
             if (task.id == taskElementForDeleted) {
-                let deletedTaskId = task.id.slice(8,9);
-                todoList.splice(deletedTaskId,1, '');
-                todoList.map(newTask => {
-                    if (newTask){
-                       console.log('newTask', newTask);
-                    }
-                });
-                console.group('toDoList');
-                console.log('task task.id', task.id);
-                console.log('task deletedTaskId', deletedTaskId);
-                console.log('toDoList in delete button before',  todoList);
-                console.groupEnd();
+                let indexElementTask = todoList.indexOf(task);
+                todoList.splice(indexElementTask,1);
             }
         });
-
-
 
         doneList.map(taskDone => {
             if (taskDone.id == taskElementForDeleted) {
-                let deletedTaskDoneId = taskDone.id.slice(8, 9);
-                doneList.splice(deletedTaskDoneId, 1, '');
-
-                doneList.map(newDoneTask => {
-                    if (newDoneTask !== ''){
-                        newDoneTask = 'hello';
-                        console.log('newDoneTask', newDoneTask);
-                    }
-                });
-
-                console.group('doneList');
-                console.log('taskDone taskDone.id', taskDone.id);
-                console.log('taskDone taskElementForDeleted', taskElementForDeleted);
-                console.log('taskDone doneList',  doneList);
-                console.groupEnd();
+                let indexTaskDone = doneList.indexOf(taskDone);
+                doneList.splice(indexTaskDone, 1);
             }
         });
 
-        console.log('Done list after', doneList)
-
-
         if(todoList.length == 0 && doneList.length == 0) {
-
             console.log('toDoList if Zero', 'toDoList if Zero');
             defaultTasks.map(task => createTask(task.id, task.text ));
-
+            console.log('todoList', todoList);
+            console.log('doneList', doneList);
         }
 
 
 
     })
 }
-
-
 
 let addNewTaskElementToField = document.querySelector('#addNewTaskField');
 let idTaskNumber = () => {
@@ -155,10 +115,8 @@ addNewTaskElementToField.addEventListener('change', (event)=> {
         event.target.value = '';
     })
 
-
-console.log('toDoList before', todoList);
 defaultTasks.map(task => createTask(task.id, task.text ));
-console.log('toDoList after', todoList);
+
 
 
 
