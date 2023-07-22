@@ -6,9 +6,12 @@ const defaultTasks = [
     {text: 'Buy', id: 'task4', taskstatus: false, },
 ];
 
+
+
 let idCount = 4;
 let addTask = false;
-
+let showDoneList = true;
+let hideDoneList = true;
 const todoList = [];
 const doneList = [];
 
@@ -45,12 +48,10 @@ const changeTaskStatus = (taskElement) => {
     }
 
     if (taskElement.checked == false) {
-
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
         let toDoListElement = document.querySelector('#toDoList');
         toDoListElement.append(elem);
         doneList.splice(doneList.indexOf(taskElement, 0));
-
     }
 }
 
@@ -65,7 +66,6 @@ const createTask = (id, text) => {
     todoList.push(taskElement);
     document.querySelector('#toDoList').append(taskElement);
 
-    //
     checkBox.addEventListener('click', (event) => {
         changeTaskStatus(event.target);
     })
@@ -116,6 +116,35 @@ addNewTaskElementToField.addEventListener('change', (event)=> {
     })
 
 defaultTasks.map(task => createTask(task.id, task.text ));
+
+if(hideDoneList) {
+    const elemShowDoneTasks = document.querySelector(`#showDoneTaskList`)
+    elemShowDoneTasks.addEventListener('click', () => {
+        let elementDoneList = document.querySelector('#doneList');
+        let elementToDoList = document.querySelector('#ToDoList');
+        let cloneDeepElementDoneList = elementDoneList.cloneNode(true);
+        console.log('elementDoneList 1', elementDoneList);
+        console.log('cloneDeepElementDoneList', cloneDeepElementDoneList);
+
+        if (hideDoneList) {
+            elementDoneList.remove();
+            // console.log('hello', 'hello');
+            hideDoneList = false;
+            console.log('elementDoneList 2', elementDoneList);
+        } else {
+            cloneDeepElementDoneList.after(elementToDoList);
+            console.log('show', 'show');
+            hideDoneList = true;
+            console.log('elementDoneList 3', elementDoneList);
+        }
+    });
+
+}
+
+
+
+
+// console.log('elemShowDoneTasks', elemShowDoneTasks);
 
 
 
