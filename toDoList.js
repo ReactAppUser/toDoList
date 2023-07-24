@@ -6,6 +6,8 @@ const defaultTasks = [
     {text: 'Buy', id: 'task4', taskstatus: false, },
 ];
 
+const allTask = [];
+
 
 
 let idCount = 4;
@@ -14,6 +16,7 @@ let showDoneList = true;
 let hideDoneList = true;
 const todoList = [];
 const doneList = [];
+const doneListSavedElement = [];
 
 const changeTaskStatus = (taskElement) => {
 
@@ -121,27 +124,49 @@ if(hideDoneList) {
     const elemShowDoneTasks = document.querySelector(`#showDoneTaskList`)
     elemShowDoneTasks.addEventListener('click', () => {
         let elementDoneList = document.querySelector('#doneList');
-        let elementToDoList = document.querySelector('#ToDoList');
-        let cloneDeepElementDoneList = elementDoneList.cloneNode(true);
+        let elementToDoList = document.querySelector('#h1DoneList');
+        // let cloneDeepElementDoneList = elementDoneList.cloneNode(true);
         console.log('elementDoneList 1', elementDoneList);
-        console.log('cloneDeepElementDoneList', cloneDeepElementDoneList);
+        // console.log('cloneDeepElementDoneList', cloneDeepElementDoneList);
 
         if (hideDoneList) {
+            doneListSavedElement.push(elementDoneList)
             elementDoneList.remove();
             // console.log('hello', 'hello');
             hideDoneList = false;
             console.log('elementDoneList 2', elementDoneList);
         } else {
-            cloneDeepElementDoneList.after(elementToDoList);
+            doneListSavedElement.map((savedElement)=> {
+                console.log('savedElement', savedElement);
+                console.log('elementToDoList', elementToDoList);
+                elementToDoList.after(savedElement);
+            })
+            // cloneDeepElementDoneList.after(elementToDoList);
             console.log('show', 'show');
             hideDoneList = true;
-            console.log('elementDoneList 3', elementDoneList);
+            console.log('elementDoneList 3', doneListSavedElement);
         }
     });
 
 }
 
+// function reloadPage() {
+//     console.log('reload', 'reload')
+// }
 
+window.beforeunload = function() {
+    if (document.readyState === "complete") {
+        console.log('Страница загрузилась');
+    } else {
+        console.log('Загрузка...');
+    }
+}
+
+console.log('document.readyState', document.readyState);
+
+console.log('document.readyState.readystatechange', document.readyState.onreadystatechange);
+
+// document.addEventListener("unload", reloadPage);
 
 
 // console.log('elemShowDoneTasks', elemShowDoneTasks);
