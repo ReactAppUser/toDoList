@@ -154,18 +154,21 @@ if(hideDoneList) {
 //     console.log('reload', 'reload')
 // }
 
-window.beforeunload = function() {
-    if (document.readyState === "complete") {
-        console.log('Страница загрузилась');
-    } else {
-        console.log('Загрузка...');
-    }
-}
 
-console.log('document.readyState', document.readyState);
+// console.log('document.readyState', document.readyState);
+//
+// console.log('document.readyState.readystatechange', document.readyState.onreadystatechange);
 
-console.log('document.readyState.readystatechange', document.readyState.onreadystatechange);
+defaultTasks.map(task => {
+    console.log('task', task);
+    let stringTextTask = task.text.toString();
+    let stringIdTask = task.id.toString();
+    let stringTaskStatus = task.taskstatus.toString();
+    let stringTask = `text: ${stringTextTask}, id: ${stringIdTask}, taskstatus: ${stringTaskStatus}`;
+    localStorage.setItem(task.id, stringTask);
+});
 
+console.log('LocalStorage', localStorage);
 // document.addEventListener("unload", reloadPage);
 
 
