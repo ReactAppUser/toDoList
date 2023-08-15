@@ -118,7 +118,9 @@ addNewTaskElementToField.addEventListener('change', (event)=> {
         event.target.value = '';
     })
 
-defaultTasks.map(task => createTask(task.id, task.text ));
+defaultTasks.map(task => {
+    createTask(task.id, task.text);
+});
 
 if(hideDoneList) {
     const elemShowDoneTasks = document.querySelector(`#showDoneTaskList`)
@@ -147,8 +149,22 @@ if(hideDoneList) {
             console.log('elementDoneList 3', doneListSavedElement);
         }
     });
-
 }
+
+// function mapAllListToStorage(neededMap) {
+//     neededMap.map((task) => {
+//         console.log('task', task)
+//         // let stringTextTask = task.text.toString();
+//         // let stringIdTask = task.id.toString();
+//         // let stringTaskStatus = task.taskstatus.toString();
+//         // let stringTask = `text: ${stringTextTask}, id: ${stringIdTask}, taskstatus: ${stringTaskStatus}`;
+//         // localStorage.setItem(neededMap.id, stringTask);
+//     });
+// }
+
+// mapAllListToStorage(todoList);
+// mapAllListToStorage(doneList);
+
 
 // function reloadPage() {
 //     console.log('reload', 'reload')
@@ -159,16 +175,8 @@ if(hideDoneList) {
 //
 // console.log('document.readyState.readystatechange', document.readyState.onreadystatechange);
 
-defaultTasks.map(task => {
-    console.log('task', task);
-    let stringTextTask = task.text.toString();
-    let stringIdTask = task.id.toString();
-    let stringTaskStatus = task.taskstatus.toString();
-    let stringTask = `text: ${stringTextTask}, id: ${stringIdTask}, taskstatus: ${stringTaskStatus}`;
-    localStorage.setItem(task.id, stringTask);
-});
 
-console.log('LocalStorage', localStorage);
+
 // document.addEventListener("unload", reloadPage);
 
 
@@ -181,5 +189,11 @@ console.log('LocalStorage', localStorage);
 // const addNewListener (input) => {
 //     createTask(input.text, randomId);
 // }
+todoList.map(task => {
+    localStorage.setItem(task, task);
+})
 
+console.log('LocalStorage', localStorage);
+console.log('todoList', todoList.map(task => task.childNodes));
+console.log('doneList', doneList);
 
