@@ -92,10 +92,10 @@ const createTask = (id, text) => {
         });
 
         if(todoList.length == 0 && doneList.length == 0) {
-            console.log('toDoList if Zero', 'toDoList if Zero');
+            // console.log('toDoList if Zero', 'toDoList if Zero');
             defaultTasks.map(task => createTask(task.id, task.text ));
-            console.log('todoList', todoList);
-            console.log('doneList', doneList);
+            // console.log('todoList', todoList);
+            // console.log('doneList', doneList);
         }
 
 
@@ -189,11 +189,28 @@ if(hideDoneList) {
 // const addNewListener (input) => {
 //     createTask(input.text, randomId);
 // }
-todoList.map(task => {
-    localStorage.setItem(task, task);
-})
+let toDoListObjectCollection = todoList.map(task => {
 
-console.log('LocalStorage', localStorage);
-console.log('todoList', todoList.map(task => task.childNodes));
+       let text =  task.children[1].firstChild.nodeValue;
+       let id = task.children[0].id;
+       let taskstatus = task.attributes[1].nodeValue;
+
+       return {text, id, taskstatus};
+;
+ console.log('objectList 1', {text, id, taskstatus});
+    // console.log('task id', task.children[0].id);
+    // console.log('task text', task.children[1].firstChild.nodeValue);
+    // console.log('task taskstatus', task.attributes[1].nodeValue);
+
+    // console.log('task', JSON.stringify({task: task}) );
+    // localStorage.setItem(task, task);
+
+});
+
+console.log('toDoListObjectCollection',  toDoListObjectCollection);
+
+
+/*console.log('LocalStorage', localStorage);*/
+console.log('todoList', todoList);
 console.log('doneList', doneList);
 
