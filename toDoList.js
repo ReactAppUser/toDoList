@@ -14,6 +14,7 @@ let idCount = 4;
 let addTask = false;
 let showDoneList = true;
 let hideDoneList = true;
+let ontoDoListAddNewTask = false;
 const todoList = [];
 const doneList = [];
 const doneListSavedElement = [];
@@ -189,28 +190,54 @@ if(hideDoneList) {
 // const addNewListener (input) => {
 //     createTask(input.text, randomId);
 // }
-let toDoListObjectCollection = todoList.map(task => {
 
-       let text =  task.children[1].firstChild.nodeValue;
-       let id = task.children[0].id;
-       let taskstatus = task.attributes[1].nodeValue;
 
-       return {text, id, taskstatus};
-;
- console.log('objectList 1', {text, id, taskstatus});
-    // console.log('task id', task.children[0].id);
-    // console.log('task text', task.children[1].firstChild.nodeValue);
-    // console.log('task taskstatus', task.attributes[1].nodeValue);
 
-    // console.log('task', JSON.stringify({task: task}) );
-    // localStorage.setItem(task, task);
-
-});
-
-console.log('toDoListObjectCollection',  toDoListObjectCollection);
 
 
 /*console.log('LocalStorage', localStorage);*/
 console.log('todoList', todoList);
 console.log('doneList', doneList);
+
+let observerToDoList = new MutationObserver(mutationRecords => {
+    console.log(mutationRecords);
+    ontoDoListAddNewTask = true;
+    console.log('ontoDoListAddNewTask', ontoDoListAddNewTask);
+
+
+    if (ontoDoListAddNewTask) {
+
+        let toDoListObjectCollection = todoList.map(task => {
+
+            let text = task.children[1].firstChild.nodeValue;
+            let id = task.children[0].id;
+            let taskstatus = task.attributes[1].nodeValue;
+
+            return {text, id, taskstatus};
+            ;
+
+
+            console.log('objectList 1', {text, id, taskstatus});
+            // console.log('task id', task.children[0].id);
+            // console.log('task text', task.children[1].firstChild.nodeValue);
+            // console.log('task taskstatus', task.attributes[1].nodeValue);
+
+            // console.log('task', JSON.stringify({task: task}) );
+            // localStorage.setItem(task, task);
+
+
+
+        });
+        console.log('toDoListObjectCollection', toDoListObjectCollection);
+        ontoDoListAddNewTask = false;
+    }
+
+});
+
+observerToDoList.observe(toDoList, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+})
+
 
