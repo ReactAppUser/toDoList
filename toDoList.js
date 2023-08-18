@@ -15,7 +15,7 @@ let addTask = false;
 let showDoneList = true;
 let hideDoneList = true;
 let ontoDoListAddNewTask = false;
-const todoList = [];
+let todoList = [];
 const doneList = [];
 const doneListSavedElement = [];
 
@@ -152,16 +152,7 @@ if(hideDoneList) {
     });
 }
 
-// function mapAllListToStorage(neededMap) {
-//     neededMap.map((task) => {
-//         console.log('task', task)
-//         // let stringTextTask = task.text.toString();
-//         // let stringIdTask = task.id.toString();
-//         // let stringTaskStatus = task.taskstatus.toString();
-//         // let stringTask = `text: ${stringTextTask}, id: ${stringIdTask}, taskstatus: ${stringTaskStatus}`;
-//         // localStorage.setItem(neededMap.id, stringTask);
-//     });
-// }
+
 
 // mapAllListToStorage(todoList);
 // mapAllListToStorage(doneList);
@@ -191,7 +182,16 @@ if(hideDoneList) {
 //     createTask(input.text, randomId);
 // }
 
-
+function mapAllListToStorage(neededMap) {
+    neededMap.map((task) => {
+        // console.log('task', task)
+        // let stringTextTask = task.text.toString();
+        // let stringIdTask = task.id.toString();
+        // let stringTaskStatus = task.taskstatus.toString();
+        // let stringTask = `text: ${stringTextTask}, id: ${stringIdTask}, taskstatus: ${stringTaskStatus}`;
+        localStorage.setItem(task.id, JSON.stringify(task));
+    });
+}
 
 
 
@@ -217,7 +217,7 @@ let observerToDoList = new MutationObserver(mutationRecords => {
             ;
 
 
-            console.log('objectList 1', {text, id, taskstatus});
+            // console.log('objectList 1', {text, id, taskstatus});
             // console.log('task id', task.children[0].id);
             // console.log('task text', task.children[1].firstChild.nodeValue);
             // console.log('task taskstatus', task.attributes[1].nodeValue);
@@ -228,8 +228,13 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 
 
         });
-        console.log('toDoListObjectCollection', toDoListObjectCollection);
+        // console.log('toDoListObjectCollection', toDoListObjectCollection);
         ontoDoListAddNewTask = false;
+
+        mapAllListToStorage(toDoListObjectCollection);
+        // toDoListObjectCollection.map(task => {
+        //     console.log('task', task.id );
+        // })
     }
 
 });
@@ -239,5 +244,28 @@ observerToDoList.observe(toDoList, {
     subtree: true,
     characterData: true,
 })
+
+console.log('localStorage', localStorage);
+
+let localStorageArray = []
+
+let keys = Object.keys(localStorage);
+for(let key of keys) {
+
+
+
+    if (key == '[object HTMLDivElement]') {
+        localStorage.removeItem(key);
+}
+    localStorageArray.push(JSON.parse(localStorage.getItem(key)));
+}
+
+
+if(todoList.length <= localStorageArray ) {
+    todoList = localStorageArray;
+}
+
+console.log('localStorage Array', localStorageArray);
+console.log('localStorage', [localStorage]);
 
 
