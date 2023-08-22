@@ -16,7 +16,7 @@ let showDoneList = true;
 let hideDoneList = true;
 let ontoDoListAddNewTask = false;
 let todoList = [];
-const doneList = [];
+let doneList = [];
 const doneListSavedElement = [];
 
 const changeTaskStatus = (taskElement) => {
@@ -60,16 +60,17 @@ const changeTaskStatus = (taskElement) => {
 }
 
 
-const createTask = (id, text) => {
+const createTask = (id, text, targetArray, appendTrue) => {
     const taskElement = document.createElement("div");
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
     const checkBox = taskElement.firstChild;
     const deleteButton = taskElement.lastChild;
-    todoList.push(taskElement);
-    document.querySelector('#toDoList').append(taskElement);
-
+    targetArray.push(taskElement);
+    if (appendTrue) {
+        document.querySelector('#toDoList').append(taskElement);
+    }
     checkBox.addEventListener('click', (event) => {
         changeTaskStatus(event.target);
     })
@@ -94,7 +95,7 @@ const createTask = (id, text) => {
 
         if(todoList.length == 0 && doneList.length == 0) {
             // console.log('toDoList if Zero', 'toDoList if Zero');
-            defaultTasks.map(task => createTask(task.id, task.text ));
+            defaultTasks.map(task => createTask(task.id, task.text, todoList, true));
             // console.log('todoList', todoList);
             // console.log('doneList', doneList);
         }
@@ -110,7 +111,7 @@ let idTaskNumber = () => {
 }
 
 addNewTaskElementToField.addEventListener('change', (event)=> {
-            todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value));
+            todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value, todoList, true));
             todoList.map((element) => {
                 if(element === undefined) {
                     todoList.splice(todoList.indexOf(element, 0),1);
@@ -120,8 +121,9 @@ addNewTaskElementToField.addEventListener('change', (event)=> {
     })
 
 defaultTasks.map(task => {
-    createTask(task.id, task.text);
+    createTask(task.id, task.text, todoList, true);
 });
+
 
 if(hideDoneList) {
     const elemShowDoneTasks = document.querySelector(`#showDoneTaskList`)
@@ -211,10 +213,18 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 
             let text = task.children[1].firstChild.nodeValue;
             let id = task.children[0].id;
-            let taskstatus = task.attributes[1].nodeValue;
+            let taskstatus = null;
+            if (task.attributes[1].nodeValue == 'false') {
+                taskstatus = false;
+            } else {
+                taskstatus = true;
+            }
+            // let taskstatus = task.attributes[1].nodeValue;
+
+            // console.log('task.attributes', task.attributes);
+            // console.log('{text, id, taskstatus}', {text, id, taskstatus});
 
             return {text, id, taskstatus};
-            ;
 
 
             // console.log('objectList 1', {text, id, taskstatus});
@@ -230,12 +240,12 @@ let observerToDoList = new MutationObserver(mutationRecords => {
         });
         // console.log('toDoListObjectCollection', toDoListObjectCollection);
         ontoDoListAddNewTask = false;
-
         mapAllListToStorage(toDoListObjectCollection);
         // toDoListObjectCollection.map(task => {
         //     console.log('task', task.id );
         // })
     }
+
 
 });
 
@@ -247,25 +257,47 @@ observerToDoList.observe(toDoList, {
 
 console.log('localStorage', localStorage);
 
-let localStorageArray = []
-
+let localStorageArray = [];
+let divElementLocalStorageArray = [];
 let keys = Object.keys(localStorage);
+
 for(let key of keys) {
-
-
 
     if (key == '[object HTMLDivElement]') {
         localStorage.removeItem(key);
 }
     localStorageArray.push(JSON.parse(localStorage.getItem(key)));
-}
+};
+
+    if (divElementLocalStorageArray.length < localStorageArray.length) {
+        localStorageArray.map(task => {
+            // const taskElement = document.createElement("div");
+            // taskElement.setAttribute('id', `${'div_'+task.id}`);
+            // taskElement.setAttribute('taskstatus', task.taskstatus);
+            // taskElement.innerHTML = `<input type="checkbox" id="${task.id}" name="scales"><label for="${task.id}">${task.text}</label><button>DELETE</button>`;
+            // divElementLocalStorageArray.push(taskElement);
 
 
-if(todoList.length <= localStorageArray ) {
-    todoList = localStorageArray;
-}
+        createTask(task.id, task.text, divElementLocalStorageArray, false);
+    });
+};
 
-console.log('localStorage Array', localStorageArray);
-console.log('localStorage', [localStorage]);
+console.log('localStorageArray 0', divElementLocalStorageArray);
+
+
+if(todoList.length < localStorageArray.length ) {
+
+    todoList = divElementLocalStorageArray;
+    console.log('defaultTasks', defaultTasks);
+    console.log('localStorageArray 1', localStorageArray);
+    console.log('divElementLocalStorageArray 1', divElementLocalStorageArray);
+    console.log('todoList 1', todoList);
+
+    // todoList = localStorageArray;
+};
+
+
+
+// console.log('localStorage', [localStorage]);
 
 
