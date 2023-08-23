@@ -1,4 +1,5 @@
-const defaultTasks = [
+
+let defaultTasks = [
     {text: 'Hello', id: 'task0', taskstatus: false, },
     {text: 'What Is Your Name?', id: 'task1', taskstatus: false, },
     {text: 'How are you?', id: 'task2', taskstatus: false, },
@@ -120,9 +121,7 @@ addNewTaskElementToField.addEventListener('change', (event)=> {
         event.target.value = '';
     })
 
-defaultTasks.map(task => {
-    createTask(task.id, task.text, todoList, true);
-});
+
 
 
 if(hideDoneList) {
@@ -198,13 +197,13 @@ function mapAllListToStorage(neededMap) {
 
 
 /*console.log('LocalStorage', localStorage);*/
-console.log('todoList', todoList);
-console.log('doneList', doneList);
+// console.log('todoList', todoList);
+// console.log('doneList', doneList);
 
 let observerToDoList = new MutationObserver(mutationRecords => {
-    console.log(mutationRecords);
+    // console.log(mutationRecords);
     ontoDoListAddNewTask = true;
-    console.log('ontoDoListAddNewTask', ontoDoListAddNewTask);
+    // console.log('ontoDoListAddNewTask', ontoDoListAddNewTask);
 
 
     if (ontoDoListAddNewTask) {
@@ -255,7 +254,7 @@ observerToDoList.observe(toDoList, {
     characterData: true,
 })
 
-console.log('localStorage', localStorage);
+// console.log('localStorage', localStorage);
 
 let localStorageArray = [];
 let divElementLocalStorageArray = [];
@@ -276,26 +275,37 @@ for(let key of keys) {
             // taskElement.setAttribute('taskstatus', task.taskstatus);
             // taskElement.innerHTML = `<input type="checkbox" id="${task.id}" name="scales"><label for="${task.id}">${task.text}</label><button>DELETE</button>`;
             // divElementLocalStorageArray.push(taskElement);
-
-
         createTask(task.id, task.text, divElementLocalStorageArray, false);
     });
 };
 
-console.log('localStorageArray 0', divElementLocalStorageArray);
+// console.log('localStorageArray 0', divElementLocalStorageArray);
 
 
 if(todoList.length < localStorageArray.length ) {
 
+    defaultTasks = localStorageArray;
     todoList = divElementLocalStorageArray;
     console.log('defaultTasks', defaultTasks);
     console.log('localStorageArray 1', localStorageArray);
     console.log('divElementLocalStorageArray 1', divElementLocalStorageArray);
     console.log('todoList 1', todoList);
-
-    // todoList = localStorageArray;
 };
 
+if (defaultTasks.length <= 5) {
+    defaultTasks.map(task => {
+        createTask(task.id, task.text, todoList, true);
+    });
+}
+
+if (5 < defaultTasks.length) {
+
+    defaultTasks.map(task => {
+        createTask(task.id, task.text, todoList, true);
+    });
+};
+
+console.log('defaultTasks.length', defaultTasks.length);
 
 
 // console.log('localStorage', [localStorage]);
