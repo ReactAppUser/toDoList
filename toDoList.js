@@ -153,22 +153,16 @@ if(hideDoneList) {
     });
 }
 
-
-
 // mapAllListToStorage(todoList);
 // mapAllListToStorage(doneList);
-
 
 // function reloadPage() {
 //     console.log('reload', 'reload')
 // }
 
-
 // console.log('document.readyState', document.readyState);
 //
 // console.log('document.readyState.readystatechange', document.readyState.onreadystatechange);
-
-
 
 // document.addEventListener("unload", reloadPage);
 
@@ -207,9 +201,7 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 
 
     if (ontoDoListAddNewTask) {
-
-        let toDoListObjectCollection = todoList.map(task => {
-
+            let toDoListObjectCollection = todoList.map(task => {
             let text = task.children[1].firstChild.nodeValue;
             let id = task.children[0].id;
             let taskstatus = null;
@@ -223,7 +215,10 @@ let observerToDoList = new MutationObserver(mutationRecords => {
             // console.log('task.attributes', task.attributes);
             // console.log('{text, id, taskstatus}', {text, id, taskstatus});
 
+
             return {text, id, taskstatus};
+
+
 
 
             // console.log('objectList 1', {text, id, taskstatus});
@@ -233,19 +228,15 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 
             // console.log('task', JSON.stringify({task: task}) );
             // localStorage.setItem(task, task);
-
-
-
         });
         // console.log('toDoListObjectCollection', toDoListObjectCollection);
         ontoDoListAddNewTask = false;
+
         mapAllListToStorage(toDoListObjectCollection);
         // toDoListObjectCollection.map(task => {
         //     console.log('task', task.id );
         // })
     }
-
-
 });
 
 observerToDoList.observe(toDoList, {
@@ -268,6 +259,27 @@ for(let key of keys) {
     localStorageArray.push(JSON.parse(localStorage.getItem(key)));
 };
 
+
+
+localStorageArray.sort(function (a, b) {
+    let valueA = +a.id.slice(4,5);
+    let valueB = +b.id.slice(4,5);
+
+    if (valueA  > valueB) {
+        return 1;
+    }
+
+    if (valueA  < valueB) {
+        return -1;
+    }
+
+    return 0;
+});
+
+// console.log('localStorageArray', localStorageArray);
+// console.log('divElementLocalStorageArray', divElementLocalStorageArray);
+
+
     if (divElementLocalStorageArray.length < localStorageArray.length) {
         localStorageArray.map(task => {
             // const taskElement = document.createElement("div");
@@ -284,7 +296,7 @@ for(let key of keys) {
 
 if(todoList.length < localStorageArray.length ) {
 
-    defaultTasks = localStorageArray;
+defaultTasks = localStorageArray;
     todoList = divElementLocalStorageArray;
     console.log('defaultTasks', defaultTasks);
     console.log('localStorageArray 1', localStorageArray);
@@ -292,20 +304,21 @@ if(todoList.length < localStorageArray.length ) {
     console.log('todoList 1', todoList);
 };
 
-if (defaultTasks.length <= 5) {
-    defaultTasks.map(task => {
-        createTask(task.id, task.text, todoList, true);
-    });
-}
-
-if (5 < defaultTasks.length) {
-
-    defaultTasks.map(task => {
+function addDefaultTasks(defaultTasksArray) {
+    defaultTasksArray.map(task => {
         createTask(task.id, task.text, todoList, true);
     });
 };
 
-console.log('defaultTasks.length', defaultTasks.length);
+if (defaultTasks.length <= 5) {
+    addDefaultTasks(defaultTasks);
+};
+
+if (5 < defaultTasks.length) {
+    addDefaultTasks(defaultTasks);
+};
+
+/*console.log('defaultTasks.length', defaultTasks.length);*/
 
 
 // console.log('localStorage', [localStorage]);
