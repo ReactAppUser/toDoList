@@ -11,7 +11,7 @@ const allTask = [];
 
 
 
-let idCount = 4;
+
 let addTask = false;
 let showDoneList = true;
 let hideDoneList = true;
@@ -19,6 +19,7 @@ let ontoDoListAddNewTask = false;
 let todoList = [];
 let doneList = [];
 const doneListSavedElement = [];
+let idCount = (localStorage.length-1);
 
 const changeTaskStatus = (taskElement) => {
 
@@ -119,7 +120,7 @@ addNewTaskElementToField.addEventListener('change', (event)=> {
                 }
             })
         event.target.value = '';
-    })
+    });
 
 
 
@@ -179,6 +180,7 @@ if(hideDoneList) {
 
 function mapAllListToStorage(neededMap) {
     neededMap.map((task) => {
+        console.log('neededMap task', task);
         // console.log('task', task)
         // let stringTextTask = task.text.toString();
         // let stringIdTask = task.id.toString();
@@ -262,8 +264,8 @@ for(let key of keys) {
 
 
 localStorageArray.sort(function (a, b) {
-    let valueA = +a.id.slice(4,5);
-    let valueB = +b.id.slice(4,5);
+    let valueA = +a.id.slice(4);
+    let valueB = +b.id.slice(4);
 
     if (valueA  > valueB) {
         return 1;
@@ -297,7 +299,9 @@ localStorageArray.sort(function (a, b) {
 if(todoList.length < localStorageArray.length ) {
 
 defaultTasks = localStorageArray;
-    todoList = divElementLocalStorageArray;
+    // todoList = divElementLocalStorageArray;
+    // divElementLocalStorageArray
+
     console.log('defaultTasks', defaultTasks);
     console.log('localStorageArray 1', localStorageArray);
     console.log('divElementLocalStorageArray 1', divElementLocalStorageArray);
@@ -310,11 +314,11 @@ function addDefaultTasks(defaultTasksArray) {
     });
 };
 
-if (defaultTasks.length <= 5) {
+if (defaultTasks.length < 5) {
     addDefaultTasks(defaultTasks);
 };
 
-if (5 < defaultTasks.length) {
+if (5 <= defaultTasks.length) {
     addDefaultTasks(defaultTasks);
 };
 
