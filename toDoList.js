@@ -21,11 +21,20 @@ let doneList = [];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
+localStorage.removeItem('[object HTMLDivElement]');
+
 const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
 
-           doneList.push(taskElement.parentElement);
+            taskElement.parentElement.setAttribute('donelist', `${true}`);
+            // let taskElementId = taskElement.getAttribute('id')
+            console.log('taskElementId', taskElementId);
+            // localStorage.setItem(taskElementId, taskElement);
+            console.log('taskElement.parentElement', taskElement.parentElement);
+            doneList.push(taskElement.parentElement);
+            console.log('doneList', doneList);
+
 
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
@@ -186,6 +195,7 @@ function mapAllListToStorage(neededMap) {
         // let stringIdTask = task.id.toString();
         // let stringTaskStatus = task.taskstatus.toString();
         // let stringTask = `text: ${stringTextTask}, id: ${stringIdTask}, taskstatus: ${stringTaskStatus}`;
+        console.log('task 5', task);
         localStorage.setItem(task.id, JSON.stringify(task));
     });
 }
@@ -258,6 +268,7 @@ for(let key of keys) {
     if (key == '[object HTMLDivElement]') {
         localStorage.removeItem(key);
 }
+    localStorage.removeItem('[object HTMLDivElement]');
     localStorageArray.push(JSON.parse(localStorage.getItem(key)));
 };
 
