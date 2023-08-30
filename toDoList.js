@@ -1,10 +1,10 @@
 
 let defaultTasks = [
-    {text: 'Hello', id: 'task0', taskstatus: false, },
-    {text: 'What Is Your Name?', id: 'task1', taskstatus: false, },
-    {text: 'How are you?', id: 'task2', taskstatus: false, },
-    {text: 'What is you like?', id: 'task3', taskstatus: false, },
-    {text: 'Buy', id: 'task4', taskstatus: false, },
+    {text: 'Hello', id: 'task0', taskstatus: false, donelist: false,},
+    {text: 'What Is Your Name?', id: 'task1', taskstatus: false, donelist: false,},
+    {text: 'How are you?', id: 'task2', taskstatus: false, donelist: false,},
+    {text: 'What is you like?', id: 'task3', taskstatus: false, donelist: false,},
+    {text: 'Buy', id: 'task4', taskstatus: false, donelist: false,},
 ];
 
 const allTask = [];
@@ -27,11 +27,12 @@ const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
 
+            console.log('taskElement', taskElement);
             taskElement.parentElement.setAttribute('donelist', `${true}`);
-            // let taskElementId = taskElement.getAttribute('id')
+            let taskElementId = taskElement.getAttribute('id')
             console.log('taskElementId', taskElementId);
-            // localStorage.setItem(taskElementId, taskElement);
-            console.log('taskElement.parentElement', taskElement.parentElement);
+            localStorage.setItem(taskElementId, taskElement);
+            console.log('taskElement.parentElement', taskElement.parentElement.attributes);
             doneList.push(taskElement.parentElement);
             console.log('doneList', doneList);
 
@@ -75,6 +76,7 @@ const createTask = (id, text, targetArray, appendTrue) => {
     const taskElement = document.createElement("div");
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
+    taskElement.setAttribute('donelist', `${false}`);
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
     const checkBox = taskElement.firstChild;
     const deleteButton = taskElement.lastChild;
@@ -212,23 +214,35 @@ let observerToDoList = new MutationObserver(mutationRecords => {
     // console.log('ontoDoListAddNewTask', ontoDoListAddNewTask);
 
 
-    if (ontoDoListAddNewTask) {
-            let toDoListObjectCollection = todoList.map(task => {
+    function listObjectCollection(arrayList) {
+            let toDoListObjectCollection = arrayList.map(task => {
             let text = task.children[1].firstChild.nodeValue;
             let id = task.children[0].id;
             let taskstatus = null;
+            let donelist = null;
+
+
             if (task.attributes[1].nodeValue == 'false') {
                 taskstatus = false;
             } else {
                 taskstatus = true;
             }
+
+            console.log('task.attributes[2].nodeValue', task.attributes[2].nodeValue);
+
+
+            if (task.attributes[2].nodeValue == 'true') {
+                    donelist = true;
+                } else {
+                    donelist = false;
+                }
             // let taskstatus = task.attributes[1].nodeValue;
 
             // console.log('task.attributes', task.attributes);
             // console.log('{text, id, taskstatus}', {text, id, taskstatus});
 
 
-            return {text, id, taskstatus};
+            return {text, id, taskstatus, donelist};
 
 
 
@@ -241,10 +255,19 @@ let observerToDoList = new MutationObserver(mutationRecords => {
             // console.log('task', JSON.stringify({task: task}) );
             // localStorage.setItem(task, task);
         });
+            return toDoListObjectCollection;
+    };
+
+
+
+    if (ontoDoListAddNewTask) {
+
+        listObjectCollection(todoList)
+        // console.log('toDoListObjectCollection 1', listObjectCollection(todoList));
         // console.log('toDoListObjectCollection', toDoListObjectCollection);
         ontoDoListAddNewTask = false;
 
-        mapAllListToStorage(toDoListObjectCollection);
+        mapAllListToStorage(listObjectCollection(todoList));
         // toDoListObjectCollection.map(task => {
         //     console.log('task', task.id );
         // })
