@@ -200,8 +200,29 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 });
 
 let observerDoneList = new MutationObserver( mutationRecords => {
-        console.log('mutationRecords Done', mutationRecords.length);
+    let doneListLocalStorage = localStorage;
+
+    // doneListLocalStorage.map(taskStorage =>{
+    //     console.log('taskStorage', taskStorage);
+    // })
+    let keysDoneLIst = Object.keys(localStorage);
+
+    for(let key of keysDoneLIst) {
+
+        let localStorageDoneListItem = JSON.parse(localStorage.getItem(key));
+        if (localStorageDoneListItem.donelist == true){
+
+            console.log('key',localStorageDoneListItem);
+            // createTask(localStorageDoneListItem.id, localStorageDoneListItem.text, localStorageDoneListItem.taskstatus, false);
+        }
+
+        // console.log('key',`${key}: ${localStorageDoneListItem}` );
+    };
+
+        console.log('mutationRecords Done', doneList);
+        // console.log('doneListLocalStorage', doneListLocalStorage);
     console.log('mutationRecords', mutationRecords[0].addedNodes);
+
     // if(mutationRecords.length < 1) {
     //        alert('hello');
     //     console.log('mutationRecords Done 1', mutationRecords.length);
