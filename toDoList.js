@@ -14,6 +14,7 @@ let hideDoneList = true;
 let ontoDoListAddNewTask = false;
 let todoList = [];
 let doneList = [];
+let doneListLocalStorageItems = [{text: 'Try for done list', id: 'task778', taskstatus: false, donelist: true,},];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
@@ -210,14 +211,20 @@ let observerDoneList = new MutationObserver( mutationRecords => {
     for(let key of keysDoneLIst) {
 
         let localStorageDoneListItem = JSON.parse(localStorage.getItem(key));
-        if (localStorageDoneListItem.donelist == true){
 
-            console.log('key',localStorageDoneListItem);
+            if (localStorageDoneListItem.donelist == true) {
+                console.log('key', localStorageDoneListItem);
+                console.log('key doneList', doneList.length);
+                doneListLocalStorageItems.push(localStorageDoneListItem);
+                console.log('doneList', doneList);
+                // if (doneList.length == 0) {}
+
+            }
             // createTask(localStorageDoneListItem.id, localStorageDoneListItem.text, localStorageDoneListItem.taskstatus, false);
         }
 
         // console.log('key',`${key}: ${localStorageDoneListItem}` );
-    };
+
 
         console.log('mutationRecords Done', doneList);
         // console.log('doneListLocalStorage', doneListLocalStorage);
@@ -229,6 +236,23 @@ let observerDoneList = new MutationObserver( mutationRecords => {
     // };
 });
 
+if (doneList.length == 0) {
+        console.log('doneListLocalStorageItems', doneListLocalStorageItems);
+
+    let divDoneListLocalStorageItemsElements;
+
+    // doneListLocalStorageItems.map(task => {
+    //     createTask(task.id, task.text, divDoneListLocalStorageItemsElements, false);
+    // });
+
+    //
+    //
+    // console.log('doneListLocalStorageItemsElements', doneListLocalStorageItemsElements);
+ // розібратися зі створенням елементів, знайти спосіб перетворити об єкт з масиву у елемент за допомогою  createTask
+        // let divDoneListLocalStorageItemsElements = listObjectCollection(doneListLocalStorageItemsElements);        // console.log('divDoneListLocalStorageItemsElements', divDoneListLocalStorageItemsElements);
+        // doneList = divDoneListLocalStorageItemsElements;
+//     console.log('doneListLocalStorageItems', doneListLocalStorageItems);
+}
 
 observerToDoList.observe(toDoList, {
     childList: true,
