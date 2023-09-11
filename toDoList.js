@@ -53,15 +53,9 @@ const changeTaskStatus = (taskElement) => {
             console.log('taskElement', taskElement);
             taskElement.parentElement.setAttribute('donelist', `${true}`);
             let taskElementId = taskElement.getAttribute('id')
-            console.log('taskElementId', taskElementId);
-            // localStorage.setItem(taskElementId, taskElement);
-            console.log('taskElement.parentElement', taskElement.parentElement.attributes);
             doneList.push(taskElement.parentElement);
         listObjectCollection(doneList).map( task => {
-            console.log('task localStorage', task);
             localStorage.setItem(taskElementId, JSON.stringify(task));
-            // console.log('doneList VALUE', listObjectCollection(doneList).map( task => {
-            //         localStorage.setItem(taskElementId, task );
                 }
             );
 
@@ -77,7 +71,6 @@ const changeTaskStatus = (taskElement) => {
         let doneListElement = document.querySelector('#DoneList');
         doneList.map(function(task){
 
-            // console.log('doneList prepend', doneList);
             doneListElement.prepend(task);
 
             return doneListElement;
@@ -101,11 +94,11 @@ const changeTaskStatus = (taskElement) => {
     }
 }
 
-const createTask = (id, text, targetArray, appendTrue) => {
+const createTask = (id, text, targetArray, appendTrue, donelistValue) => {
     const taskElement = document.createElement("div");
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
-    taskElement.setAttribute('donelist', `${false}`);
+    taskElement.setAttribute('donelist', `${donelistValue}`);
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
     const checkBox = taskElement.firstChild;
     const deleteButton = taskElement.lastChild;
@@ -136,7 +129,7 @@ const createTask = (id, text, targetArray, appendTrue) => {
         });
 
         if(todoList.length == 0 && doneList.length == 0) {
-            defaultTasks.map(task => createTask(task.id, task.text, todoList, true));
+            defaultTasks.map(task => createTask(task.id, task.text, todoList, true, false));
         }
     })
 };
@@ -147,7 +140,7 @@ let idTaskNumber = () => {
 }
 
 addNewTaskElementToField.addEventListener('change', (event)=> {
-            todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value, todoList, true));
+            todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value, todoList, true, false));
             todoList.map((element) => {
                 if(element === undefined) {
                     todoList.splice(todoList.indexOf(element, 0),1);
@@ -202,10 +195,6 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 
 let observerDoneList = new MutationObserver( mutationRecords => {
     let doneListLocalStorage = localStorage;
-
-    // doneListLocalStorage.map(taskStorage =>{
-    //     console.log('taskStorage', taskStorage);
-    // })
     let keysDoneLIst = Object.keys(localStorage);
 
     for(let key of keysDoneLIst) {
@@ -214,39 +203,32 @@ let observerDoneList = new MutationObserver( mutationRecords => {
         if (localStorageDoneListItem.donelist == true){
 
             console.log('key',localStorageDoneListItem);
-            // createTask(localStorageDoneListItem.id, localStorageDoneListItem.text, localStorageDoneListItem.taskstatus, false);
         }
 
-        // console.log('key',`${key}: ${localStorageDoneListItem}` );
     };
-
-        console.log('mutationRecords Done', doneList);
-        // console.log('doneListLocalStorage', doneListLocalStorage);
-    console.log('mutationRecords', mutationRecords[0].addedNodes);
-
-    // if(mutationRecords.length < 1) {
-    //        alert('hello');
-    //     console.log('mutationRecords Done 1', mutationRecords.length);
-    // };
 });
 
+
 if (doneList.length == 0) {
-        console.log('doneListLocalStorageItems', doneListLocalStorageItems);
 
-    let divDoneListLocalStorageItemsElements;
 
-    // doneListLocalStorageItems.map(task => {
-    //     createTask(task.id, task.text, divDoneListLocalStorageItemsElements, false);
-    // });
+    let divDoneListLocalStorageItemsElements = [];
 
-    //
-    //
-    // console.log('doneListLocalStorageItemsElements', doneListLocalStorageItemsElements);
- // розібратися зі створенням елементів, знайти спосіб перетворити об єкт з масиву у елемент за допомогою  createTask
-        // let divDoneListLocalStorageItemsElements = listObjectCollection(doneListLocalStorageItemsElements);        // console.log('divDoneListLocalStorageItemsElements', divDoneListLocalStorageItemsElements);
-        // doneList = divDoneListLocalStorageItemsElements;
-//     console.log('doneListLocalStorageItems', doneListLocalStorageItems);
+    doneListLocalStorageItems.map(task => {
+        createTask(task.id, task.text, divDoneListLocalStorageItemsElements, false, true);
+    });
+
+
+
+    doneList = divDoneListLocalStorageItemsElements;
+
+    let doneListElementLocalStorageAddedMechanics = document.querySelector('#DoneList');
+    doneList.map(task => {
+        doneListElementLocalStorageAddedMechanics.prepend(task);
+    });
+
 }
+
 
 observerToDoList.observe(toDoList, {
     childList: true,
@@ -288,7 +270,7 @@ localStorageArray.sort(function (a, b) {
 
     if (divElementLocalStorageArray.length < localStorageArray.length) {
         localStorageArray.map(task => {
-        createTask(task.id, task.text, divElementLocalStorageArray, false);
+        createTask(task.id, task.text, divElementLocalStorageArray, false, false);
     });
 };
 
@@ -303,7 +285,7 @@ defaultTasks = localStorageArray;
 
 function addDefaultTasks(defaultTasksArray) {
     defaultTasksArray.map(task => {
-        createTask(task.id, task.text, todoList, true);
+        createTask(task.id, task.text, todoList, true, false);
     });
 };
 
@@ -315,6 +297,9 @@ if (5 <= defaultTasks.length) {
     addDefaultTasks(defaultTasks);
 };
 
-
+// Знайти спосіб попередити заміну поля donelist: true в localStorage
+// при перезавантажені заміни, заміна в localStorage відбувається через,
+// що після оновлення сторінки визивається перший виклик локал сторедж який строрює за тим самим ключом
+// тіло, що містить donelist: false
 
 
