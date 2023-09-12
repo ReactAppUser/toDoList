@@ -179,6 +179,7 @@ function mapAllListToStorage(neededMap) {
     neededMap.map((task) => {
         console.log('neededMap task', task);
         console.log('task 5', task);
+        console.log('localStorage toDoList', localStorage);
         localStorage.setItem(task.id, JSON.stringify(task));
     });
 }
@@ -201,7 +202,7 @@ let observerDoneList = new MutationObserver( mutationRecords => {
 
         let localStorageDoneListItem = JSON.parse(localStorage.getItem(key));
         if (localStorageDoneListItem.donelist == true){
-
+            doneListLocalStorageItems.push(localStorageDoneListItem);
             console.log('key',localStorageDoneListItem);
         }
 
