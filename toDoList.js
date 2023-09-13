@@ -14,7 +14,7 @@ let hideDoneList = true;
 let ontoDoListAddNewTask = false;
 let todoList = [];
 let doneList = [];
-let doneListLocalStorageItems = [{text: 'Try for done list', id: 'task778', taskstatus: false, donelist: true,},];
+let doneListLocalStorageItems = [{text: 'Try for done list', id: 'task778', taskstatus: false, donelist: false,},];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
@@ -49,7 +49,6 @@ function listObjectCollection(arrayList) {
 const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
-
             console.log('taskElement', taskElement);
             taskElement.parentElement.setAttribute('donelist', `${true}`);
             let taskElementId = taskElement.getAttribute('id')
@@ -129,7 +128,7 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue) => {
         });
 
         if(todoList.length == 0 && doneList.length == 0) {
-            defaultTasks.map(task => createTask(task.id, task.text, todoList, true, false));
+            defaultTasks.map(task => createTask(task.id, task.text, todoList, true, true));
         }
     })
 };
@@ -201,9 +200,9 @@ let observerDoneList = new MutationObserver( mutationRecords => {
     for(let key of keysDoneLIst) {
 
         let localStorageDoneListItem = JSON.parse(localStorage.getItem(key));
-        if (localStorageDoneListItem.donelist == true){
+        if (localStorageDoneListItem.donelist == true) {
             doneListLocalStorageItems.push(localStorageDoneListItem);
-            console.log('key',localStorageDoneListItem);
+            console.log('key', localStorageDoneListItem);
         }
 
     };
@@ -285,9 +284,36 @@ defaultTasks = localStorageArray;
 };
 
 function addDefaultTasks(defaultTasksArray) {
+
+    let localStorageState = Object.keys(localStorage);
+    let localStorageStateItemTrue = null;
+
+
+    for(let keyItem of localStorageState) {
+
+        let localStorageStateItem = JSON.parse(localStorage.getItem(keyItem));
+
+        if (localStorageStateItem.donelist == true) {
+
+            localStorageStateItemTrue = localStorageStateItem;
+            console.log('keyItem', localStorageStateItem);
+        };
+    };
+
+
+
+
+
+    // localStorageState.map(task => {
+    //     console.log('localStorageState', task);
+    // });
+
     defaultTasksArray.map(task => {
+        // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         createTask(task.id, task.text, todoList, true, false);
     });
+
+
 };
 
 if (defaultTasks.length < 5) {
@@ -299,8 +325,8 @@ if (5 <= defaultTasks.length) {
 };
 
 // Знайти спосіб попередити заміну поля donelist: true в localStorage
-// при перезавантажені заміни, заміна в localStorage відбувається через,
-// що після оновлення сторінки визивається перший виклик локал сторедж який строрює за тим самим ключом
+// при перезавантажені заміни. Заміна в localStorage відбувається через те,
+// що після оновлення сторінки визивається перший виклик локал сторедж який створює за тим самим ключом
 // тіло, що містить donelist: false
 
 
