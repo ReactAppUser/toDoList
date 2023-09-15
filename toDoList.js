@@ -93,7 +93,7 @@ const changeTaskStatus = (taskElement) => {
     }
 }
 
-const createTask = (id, text, targetArray, appendTrue, donelistValue) => {
+const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue) => {
     const taskElement = document.createElement("div");
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
@@ -103,7 +103,7 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue) => {
     const deleteButton = taskElement.lastChild;
     targetArray.push(taskElement);
     if (appendTrue) {
-        document.querySelector('#toDoList').append(taskElement);
+        document.querySelector(`${querySelectorValue? querySelectorValue:'#toDoList'}`).append(taskElement);
     }
     checkBox.addEventListener('click', (event) => {
         changeTaskStatus(event.target);
@@ -296,7 +296,7 @@ function addDefaultTasks(defaultTasksArray) {
         if (localStorageStateItem.donelist == true) {
 
             localStorageStateItemTrue = localStorageStateItem;
-            console.log('keyItem', localStorageStateItem);
+            console.log('keyItem Super', localStorageStateItem);
         };
     };
 
@@ -307,13 +307,54 @@ function addDefaultTasks(defaultTasksArray) {
     // localStorageState.map(task => {
     //     console.log('localStorageState', task);
     // });
-
+if(localStorage.length == 0) {
     defaultTasksArray.map(task => {
         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         createTask(task.id, task.text, todoList, true, false);
+
+    });
+};
+
+if(localStorage.length > 0) {
+
+    let localStorageStateDoneList = Object.keys(localStorage);
+    let localStorageStateItemTrueDonelist = [];
+
+    for(let keyItem of localStorageStateDoneList) {
+
+        let localStorageStateItemDoneList = JSON.parse(localStorage.getItem(keyItem));
+
+        console.log('localStorageStateItemDoneList SUPER', localStorageStateItemDoneList);
+
+            localStorageStateItemTrueDonelist.push(localStorageStateItemDoneList);
+
+        //     [localStorage].map(task => {
+    //     console.log('task SUPER', task );
+    // })
+    //
+    };
+
+    localStorageStateItemTrueDonelist.map(task => {
+
+        console.log('task SUPED SUPER', task);
+        // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
+        if(task.donelist == false) {
+            console.log('task.doneList FALSE', task );
+            createTask(task.id, task.text, todoList, true, task.donelist);
+        };
+        // Потрібно розібратися чому відбувається дублювання елементів у   localStorageStateItemTrueDonelist котрі відмальвуються
+        if(task.donelist == true) {
+            console.log('task.doneList TRUE', task );
+            localStorageStateItemTrueDonelist.map(task => {
+                // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
+                createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList');
+
+            });
+        }
     });
 
-
+    console.log('keyItem Super', localStorageStateItemTrueDonelist);
+};
 };
 
 if (defaultTasks.length < 5) {
