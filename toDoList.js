@@ -128,8 +128,9 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
         });
 
         if(todoList.length == 0 && doneList.length == 0) {
-            defaultTasks.map(task => createTask(task.id, task.text, todoList, true, true));
+            defaultTasks.map(task => createTask(task.id, task.text, todoList, true, false));
         }
+        localStorage.clear();
     })
 };
 
@@ -179,10 +180,12 @@ let observerToDoList = new MutationObserver(mutationRecords => {
     ontoDoListAddNewTask = true;
 
     if (ontoDoListAddNewTask) {
-        listObjectCollection(todoList)
+        listObjectCollection(todoList);
         ontoDoListAddNewTask = false;
         mapAllListToStorage(listObjectCollection(todoList));
     }
+
+
 
 });
 
@@ -243,44 +246,42 @@ for(let key of keys) {
 };
 
 
-// function arraySort(array, position) {
-//
-//      array.sort(function (a, b) {
-//         let valueA = +a.id.slice(position);
-//         let valueB = +b.id.slice(position);
-//
-//         if (valueA  > valueB) {
-//             return 1;
-//         }
-//
-//         if (valueA  < valueB) {
-//             return -1;
-//         }
-//
-//         return 0;
-//     });
-//
-//     return array
-// }
-//
-// arraySort(localStorageArray, 4);
+function arraySort(array, position) {
 
-localStorageArray.sort(function (a, b) {
-    let valueA = +a.id.slice(4);
-    let valueB = +b.id.slice(4);
+     array.sort(function (a, b) {
+        let valueA = +a.id.slice(position);
+        let valueB = +b.id.slice(position);
 
-    if (valueA  > valueB) {
-        return 1;
-    }
+        if (valueA  > valueB) {
+            return 1;
+        }
 
-    if (valueA  < valueB) {
-        return -1;
-    }
+        if (valueA  < valueB) {
+            return -1;
+        }
 
-    return 0;
-});
+        return 0;
+    });
 
+    return array
+}
 
+arraySort(localStorageArray, 4);
+
+// localStorageArray.sort(function (a, b) {
+//     let valueA = +a.id.slice(4);
+//     let valueB = +b.id.slice(4);
+//
+//     if (valueA  > valueB) {
+//         return 1;
+//     }
+//
+//     if (valueA  < valueB) {
+//         return -1;
+//     }
+//
+//     return 0;
+// });
 
 
     if (divElementLocalStorageArray.length < localStorageArray.length) {
@@ -315,6 +316,7 @@ function addDefaultTasks(defaultTasksArray) {
     // localStorageState.map(task => {
     //     console.log('localStorageState', task);
     // });
+
 if(localStorage.length == 0) {
     defaultTasksArray.map(task => {
         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
@@ -331,21 +333,17 @@ if(localStorage.length > 0) {
 
         let localStorageStateItemDoneList = JSON.parse(localStorage.getItem(keyItem));
             localStorageStateItemTrueDonelist.push(localStorageStateItemDoneList);
-
-        //     [localStorage].map(task => {
-    //     console.log('task SUPER', task );
-    // })
-    //
     };
+
+    arraySort(localStorageStateItemTrueDonelist, 4);
 
     localStorageStateItemTrueDonelist.map(task => {
         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         if(task.donelist == false) {
+            console.log('task number', task)
             createTask(task.id, task.text, todoList, true, task.donelist);
              };
        // Потрібно розібратися чому відбувається дублювання елементів у localStorageStateItemTrueDonelist котрі відмальвуються
-
-
     });
 
 
@@ -357,30 +355,16 @@ if(localStorage.length > 0) {
             // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
             createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList');
 
-        };
+            let taskIdNumber = 0; //Розібратися як робити зміни на тру у checked  всіх елементах, що потрапляють у doneList у цьому місці
 
+            console.log('taskIdNumber', taskIdNumber);
+            doneList[+`${taskIdNumber}`].children[0].checked = true;
+
+        };
 
     });
 
     console.log('todoList 2',  todoList);
-
-    // arraySort(todoList, 8);
-    todoList.sort(function (a, b) {
-        console.log('a', +a.id.slice(8));
-        console.log('b', +b.id.slice(8));
-        let valueA = +a.id.slice(8);
-        let valueB = +b.id.slice(8);
-
-        if (valueA  > valueB) {
-            return 1;
-        }
-
-        if (valueA  < valueB) {
-            return -1;
-        }
-
-        return 0;
-    });
 };
 };
 
@@ -393,8 +377,7 @@ if (5 <= defaultTasks.length) {
 };
 
 
-
-
+console.log('todoList 3', todoList);
 
 // Знайти спосіб попередити заміну поля donelist: true в localStorage
 // при перезавантажені заміни. Заміна в localStorage відбувається через те,
@@ -402,3 +385,4 @@ if (5 <= defaultTasks.length) {
 // тіло, що містить donelist: false
 
 
+// Шлях до зміни властивості checked  doneList[0].children[0].checked
