@@ -49,7 +49,7 @@ function listObjectCollection(arrayList) {
 const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
-            console.log('taskElement', taskElement);
+
             taskElement.parentElement.setAttribute('donelist', `${true}`);
             let taskElementId = taskElement.getAttribute('id')
             doneList.push(taskElement.parentElement);
@@ -93,12 +93,18 @@ const changeTaskStatus = (taskElement) => {
     }
 }
 
-const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue) => {
+const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus) => {
     const taskElement = document.createElement("div");
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
     taskElement.setAttribute('donelist', `${donelistValue}`);
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
+
+    if (checkedStatus == true) {
+        console.log('taskElement', taskElement.firstChild.checked);
+        taskElement.firstChild.checked = true;
+    }
+
     const checkBox = taskElement.firstChild;
     const deleteButton = taskElement.lastChild;
     targetArray.push(taskElement);
@@ -130,7 +136,6 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
         if(todoList.length == 0 && doneList.length == 0) {
             defaultTasks.map(task => createTask(task.id, task.text, todoList, true, false));
         }
-        localStorage.clear();
     })
 };
 
@@ -138,6 +143,13 @@ let addNewTaskElementToField = document.querySelector('#addNewTaskField');
 let idTaskNumber = () => {
     return ++idCount;
 }
+
+let clearLocalStorageButton = document.querySelector('#clearLocalStorage');
+
+clearLocalStorageButton.addEventListener('click', (event) => {
+localStorage.clear();
+location.reload();
+});
 
 addNewTaskElementToField.addEventListener('change', (event)=> {
             todoList.push(createTask(`${'task'+ idTaskNumber()}`, event.target.value, todoList, true, false));
@@ -353,12 +365,14 @@ if(localStorage.length > 0) {
 
         if(task.donelist == true) {
             // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
-            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList');
+            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true);
 
-            let taskIdNumber = 0; //Розібратися як робити зміни на тру у checked  всіх елементах, що потрапляють у doneList у цьому місці
+            let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked  всіх елементах, що потрапляють у doneList у цьому місці
+            //
+            // console.log('taskIdNumber', taskIdNumber);
+            console.log('doneList[task.id]', taskIdNumber);
 
-            console.log('taskIdNumber', taskIdNumber);
-            doneList[+`${taskIdNumber}`].children[0].checked = true;
+                // doneList[taskIdNumber].children[0].checked = true;
 
         };
 
@@ -379,10 +393,4 @@ if (5 <= defaultTasks.length) {
 
 console.log('todoList 3', todoList);
 
-// Знайти спосіб попередити заміну поля donelist: true в localStorage
-// при перезавантажені заміни. Заміна в localStorage відбувається через те,
-// що після оновлення сторінки визивається перший виклик локал сторедж який створює за тим самим ключом
-// тіло, що містить donelist: false
-
-
-// Шлях до зміни властивості checked  doneList[0].children[0].checked
+//Знайти місце у коді яке  дозволить відмінити зміну послідовності після перезавантаження сторінки у doneList
