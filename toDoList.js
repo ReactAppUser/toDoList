@@ -18,7 +18,6 @@ let doneListLocalStorageItems = [];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
-
 function listObjectCollection(arrayList) {
     let toDoListObjectCollection = arrayList.map(task => {
         let text = task.children[1].firstChild.nodeValue;
@@ -53,11 +52,10 @@ const changeTaskStatus = (taskElement) => {
             taskElement.parentElement.setAttribute('donelist', `${true}`);
             let taskElementId = taskElement.getAttribute('id')
             doneList.push(taskElement.parentElement);
-            listObjectCollection(doneList).map( task => {
+            listObjectCollection(doneList).map(task => {
             localStorage.setItem(taskElementId, JSON.stringify(task));
                 }
             );
-
 
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
@@ -79,7 +77,6 @@ const changeTaskStatus = (taskElement) => {
         // add to display in new list
     } else {
         todoList.push(taskElement);
-
         // console.log('elem 2', elem)
         // doneList.splice(doneList.findIndex(elem), 0);
         // same shit
@@ -101,7 +98,7 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
 
     if (checkedStatus == true) {
-        console.log('taskElement', taskElement.firstChild.checked);
+        // console.log('taskElement', taskElement.firstChild.checked);
         taskElement.firstChild.checked = true;
     }
 
@@ -188,7 +185,7 @@ function mapAllListToStorage(neededMap) {
 }
 
 let observerToDoList = new MutationObserver(mutationRecords => {
-    console.log('todoList',  todoList);
+    // console.log('todoList',  todoList);
     ontoDoListAddNewTask = true;
 
     if (ontoDoListAddNewTask) {
@@ -196,8 +193,6 @@ let observerToDoList = new MutationObserver(mutationRecords => {
         ontoDoListAddNewTask = false;
         mapAllListToStorage(listObjectCollection(todoList));
     }
-
-
 
 });
 
@@ -213,6 +208,8 @@ let observerDoneList = new MutationObserver( mutationRecords => {
         }
 
     };
+    // localStorage.setItem('array', JSON.stringify(doneList));
+    console.log('doneList', doneList);
 });
 
 if (doneList.length == 0) {
@@ -222,8 +219,6 @@ if (doneList.length == 0) {
     doneListLocalStorageItems.map(task => {
         createTask(task.id, task.text, divDoneListLocalStorageItemsElements, false, true);
     });
-
-
 
     doneList = divDoneListLocalStorageItemsElements;
 
@@ -261,22 +256,28 @@ for(let key of keys) {
 function arraySort(array, position) {
 
      array.sort(function (a, b) {
-        let valueA = +a.id.slice(position);
-        let valueB = +b.id.slice(position);
+        let aSlice = a.id.slice(0, 4);
+        let bSlice = b.id.slice(0, 4);
+         if(a.id & b.id == 'task') { //знпйти спосіб обійти помилку, що пов'язана зі слайс
+             let valueA = +a.id.slice(position);
+             let valueB = +b.id.slice(position);
 
-        if (valueA  > valueB) {
-            return 1;
-        }
+             if (valueA > valueB) {
+                 return 1;
+             }
 
-        if (valueA  < valueB) {
-            return -1;
-        }
+             if (valueA < valueB) {
+                 return -1;
+             }
 
-        return 0;
-    });
+             return 0;
+
+         }
+     });
 
     return array
-}
+
+};
 
 arraySort(localStorageArray, 4);
 
@@ -352,14 +353,11 @@ if(localStorage.length > 0) {
     localStorageStateItemTrueDonelist.map(task => {
         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         if(task.donelist == false) {
-            console.log('task number', task)
+            // console.log('task number', task)
             createTask(task.id, task.text, todoList, true, task.donelist);
              };
        // Потрібно розібратися чому відбувається дублювання елементів у localStorageStateItemTrueDonelist котрі відмальвуються
     });
-
-
-
 
     localStorageStateItemTrueDonelist.map(task => {
 
@@ -367,10 +365,10 @@ if(localStorage.length > 0) {
             // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
             createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true);
 
-            let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked  всіх елементах, що потрапляють у doneList у цьому місці
+            let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked всіх елементах, що потрапляють у doneList у цьому місці
             //
             // console.log('taskIdNumber', taskIdNumber);
-            console.log('doneList[task.id]', taskIdNumber);
+            // console.log('doneList[task.id]', taskIdNumber);
 
                 // doneList[taskIdNumber].children[0].checked = true;
 
@@ -378,7 +376,7 @@ if(localStorage.length > 0) {
 
     });
 
-    console.log('todoList 2',  todoList);
+    // console.log('todoList 2',  todoList);
 };
 };
 
@@ -391,6 +389,6 @@ if (5 <= defaultTasks.length) {
 };
 
 
-console.log('todoList 3', todoList);
+// console.log('todoList 3', todoList);
 
 //Знайти місце у коді яке  дозволить відмінити зміну послідовності після перезавантаження сторінки у doneList
