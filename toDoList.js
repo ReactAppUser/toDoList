@@ -92,10 +92,14 @@ const changeTaskStatus = (taskElement) => {
 
 const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus) => {
     const taskElement = document.createElement("div");
+    console.log('targetArray', targetArray);
+    console.log('taskelement', taskElement.id);
+
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
     taskElement.setAttribute('donelist', `${donelistValue}`);
     taskElement.innerHTML = `<input type="checkbox" id="${id}" name="scales"><label for="${id}">${text}</label><button>DELETE</button>`;
+
 
     if (checkedStatus == true) {
         // console.log('taskElement', taskElement.firstChild.checked);
@@ -133,7 +137,11 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
         if(todoList.length == 0 && doneList.length == 0) {
             defaultTasks.map(task => createTask(task.id, task.text, todoList, true, false));
         }
-    })
+    });
+
+    taskElement.setAttribute('positionIndex',  targetArray.indexOf(taskElement));
+
+    // console.log('${div#+taskElement.id}',      );
 };
 
 let addNewTaskElementToField = document.querySelector('#addNewTaskField');
@@ -256,9 +264,11 @@ for(let key of keys) {
 function arraySort(array, position) {
 
      array.sort(function (a, b) {
-        let aSlice = a.id.slice(0, 4);
-        let bSlice = b.id.slice(0, 4);
-         if(a.id & b.id == 'task') { //знпйти спосіб обійти помилку, що пов'язана зі слайс
+        // let aSlice = a.id.slice(0, 4);
+        // let bSlice = b.id.slice(0, 4);
+        // console.log('aSlice', aSlice );
+        //  console.log('bSlice', bSlice );
+        //  if(aSlice &  bSlice == "task") { //знпйти спосіб обійти помилку, що пов'язана зі слайс
              let valueA = +a.id.slice(position);
              let valueB = +b.id.slice(position);
 
@@ -272,7 +282,7 @@ function arraySort(array, position) {
 
              return 0;
 
-         }
+         // }
      });
 
     return array
@@ -363,7 +373,7 @@ if(localStorage.length > 0) {
 
         if(task.donelist == true) {
             // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
-            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true);
+            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true, );
 
             let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked всіх елементах, що потрапляють у doneList у цьому місці
             //
