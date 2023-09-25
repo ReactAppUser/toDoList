@@ -20,10 +20,12 @@ let idCount = (localStorage.length-1);
 
 function listObjectCollection(arrayList) {
     let toDoListObjectCollection = arrayList.map(task => {
+        // console.log('toDoListObjectCollection task', task.attributes[3].nodeValue);
         let text = task.children[1].firstChild.nodeValue;
         let id = task.children[0].id;
         let taskstatus = null;
         let donelist = null;
+        let positionIndex = task.attributes[3].nodeValue;
 
         if (task.attributes[1].nodeValue == 'false') {
 
@@ -39,7 +41,7 @@ function listObjectCollection(arrayList) {
             donelist = false;
         }
 
-        return {text, id, taskstatus, donelist};
+        return {text, id, taskstatus, donelist, positionIndex};
 
     });
     return toDoListObjectCollection;
@@ -53,7 +55,18 @@ const changeTaskStatus = (taskElement) => {
             let taskElementId = taskElement.getAttribute('id')
             doneList.push(taskElement.parentElement);
             listObjectCollection(doneList).map(task => {
+                console.log('doneList', task);
+
+                // let doneListTask = doneList.map(doneListTask =>  doneListTask.index);
+
+                    let doneListTaskElement = doneList.splice(doneList.indexOf(task, 0));
+                    console.log( 'doneList task', doneListTaskElement);
+                    let doneListTaskElementPosition = doneList.indexOf(doneListTaskElement, 0);
+                    console.log( 'doneList taskIndex', doneListTaskElementPosition);
             localStorage.setItem(taskElementId, JSON.stringify(task));
+            //Допрацювати пошук індексу елемента у донеЛіст, після цього провести порівняння індексу у донеЛіст та значення властивості positionIndex та замінити значення positionIndex на індексу з донеЛіст
+                // для відповідного елементу 25.09.23
+
                 }
             );
 
@@ -92,8 +105,8 @@ const changeTaskStatus = (taskElement) => {
 
 const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus) => {
     const taskElement = document.createElement("div");
-    console.log('targetArray', targetArray);
-    console.log('taskelement', taskElement.id);
+    // console.log('targetArray', targetArray);
+    // console.log('taskelement', taskElement.id);
 
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
@@ -108,10 +121,12 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
 
     const checkBox = taskElement.firstChild;
     const deleteButton = taskElement.lastChild;
+
     targetArray.push(taskElement);
     if (appendTrue) {
         document.querySelector(`${querySelectorValue? querySelectorValue:'#toDoList'}`).append(taskElement);
     }
+
     checkBox.addEventListener('click', (event) => {
         changeTaskStatus(event.target);
     })
@@ -188,6 +203,7 @@ if(hideDoneList) {
 
 function mapAllListToStorage(neededMap) {
     neededMap.map((task) => {
+        // console.log('task neededNap', task);
         localStorage.setItem(task.id, JSON.stringify(task));
     });
 }
@@ -217,7 +233,7 @@ let observerDoneList = new MutationObserver( mutationRecords => {
 
     };
     // localStorage.setItem('array', JSON.stringify(doneList));
-    console.log('doneList', doneList);
+    // console.log('doneList', doneList);
 });
 
 if (doneList.length == 0) {
