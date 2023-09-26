@@ -55,15 +55,25 @@ const changeTaskStatus = (taskElement) => {
             let taskElementId = taskElement.getAttribute('id')
             doneList.push(taskElement.parentElement);
             listObjectCollection(doneList).map(task => {
-                console.log('doneList', task);
-
+                // console.log('doneList', task);
+                //
                 // let doneListTask = doneList.map(doneListTask =>  doneListTask.index);
+                // console.log('doneListTask', doneListTask);
 
-                    let doneListTaskElement = doneList.splice(doneList.indexOf(task, 0));
-                    console.log( 'doneList task', doneListTaskElement);
-                    let doneListTaskElementPosition = doneList.indexOf(doneListTaskElement, 0);
-                    console.log( 'doneList taskIndex', doneListTaskElementPosition);
+
+                //     let doneListTaskElementPosition = doneList.indexOf(doneListTaskElement, 0);
+                //     console.log( 'doneList taskIndex', doneListTaskElementPosition);
             localStorage.setItem(taskElementId, JSON.stringify(task));
+
+            let doneListDuplicate = doneList.concat();
+            console.log('doneListDuplicate', doneListDuplicate);
+            let mapedDoneListDuplicate = doneListDuplicate.map(task => {
+            console.log('mapedDoneLIstDuplicate', task.nodeValue); //Знайти спосіб дістати повний айді що відповідає елементу 26.09.23
+            });
+            let doneListTaskElement = doneListDuplicate.splice(doneListDuplicate.indexOf(task, 0));
+            console.log( 'doneList task ownerElement', (doneListTaskElement[0].attributes.donelist.ownerElement));
+            let doneListTaskElementPosition = doneListDuplicate.indexOf(doneListTaskElement[0], 0);
+            console.log('doneList taskIndex', doneListTaskElementPosition);
             //Допрацювати пошук індексу елемента у донеЛіст, після цього провести порівняння індексу у донеЛіст та значення властивості positionIndex та замінити значення positionIndex на індексу з донеЛіст
                 // для відповідного елементу 25.09.23
 
