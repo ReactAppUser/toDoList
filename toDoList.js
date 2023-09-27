@@ -55,7 +55,9 @@ const changeTaskStatus = (taskElement) => {
             let taskElementId = taskElement.getAttribute('id')
             doneList.push(taskElement.parentElement);
             listObjectCollection(doneList).map(task => {
-                // console.log('doneList', task);
+
+                let stringConstructionForArrayNodeValueDoneListDuplicate = `${'div#div_' + task.id}`;
+                    // console.log('doneList', stringConstructionForArrayNodeValueDoneListDuplicate);
                 //
                 // let doneListTask = doneList.map(doneListTask =>  doneListTask.index);
                 // console.log('doneListTask', doneListTask);
@@ -65,17 +67,28 @@ const changeTaskStatus = (taskElement) => {
                 //     console.log( 'doneList taskIndex', doneListTaskElementPosition);
             localStorage.setItem(taskElementId, JSON.stringify(task));
 
+            // let stringConstructionForArrayNodeValueDoneListDuplicate =
             let doneListDuplicate = doneList.concat();
-            console.log('doneListDuplicate', doneListDuplicate);
+            // console.log('doneListDuplicate', doneListDuplicate);
             let mapedDoneListDuplicate = doneListDuplicate.map(task => {
-            console.log('mapedDoneLIstDuplicate', task.nodeValue); //Знайти спосіб дістати повний айді що відповідає елементу 26.09.23
+              let arrayNodeValueDoneListDuplicate = `${'div#' + task.attributes.id.nodeValue}`;
+
+
+              return arrayNodeValueDoneListDuplicate
+            //Знайти спосіб дістати повний айді що відповідає елементу 26.09.23
             });
-            let doneListTaskElement = doneListDuplicate.splice(doneListDuplicate.indexOf(task, 0));
-            console.log( 'doneList task ownerElement', (doneListTaskElement[0].attributes.donelist.ownerElement));
-            let doneListTaskElementPosition = doneListDuplicate.indexOf(doneListTaskElement[0], 0);
-            console.log('doneList taskIndex', doneListTaskElementPosition);
-            //Допрацювати пошук індексу елемента у донеЛіст, після цього провести порівняння індексу у донеЛіст та значення властивості positionIndex та замінити значення positionIndex на індексу з донеЛіст
-                // для відповідного елементу 25.09.23
+
+            let doneListTaskElementPosition = mapedDoneListDuplicate.indexOf(stringConstructionForArrayNodeValueDoneListDuplicate, 0);
+
+                        if(doneListTaskElementPosition !== task.positionIndex) {
+                        task.positionIndex = doneListTaskElementPosition;
+                    }
+
+                    localStorage.setItem(taskElementId, JSON.stringify(task));
+                    //27/09/23 Ми змінили значення в властивості positionIndex в localStorage на фактичний index елемента у doneList після того, як він був обраний у doneList
+                    // тепер необхідно знайти місце у коді яке відповідає за відрисовку doneList після перезавантаження сторінки і задати для кожного елемента у якості індекс це фактичне значення
+                    // обраного елемента у doneList
+
 
                 }
             );
