@@ -126,7 +126,7 @@ const changeTaskStatus = (taskElement) => {
     }
 }
 
-const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus) => {
+const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus, positionIndex) => {
     const taskElement = document.createElement("div");
     // console.log('targetArray', targetArray);
     // console.log('taskelement', taskElement.id);
@@ -145,7 +145,19 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
     const checkBox = taskElement.firstChild;
     const deleteButton = taskElement.lastChild;
 
-    targetArray.push(taskElement);
+    if (targetArray == todoList) {
+        targetArray.push(taskElement);
+        console.log('targetArray todoList', targetArray);
+    };
+
+
+    if (targetArray == doneList) {
+        targetArray[positionIndex] = taskElement;
+        console.log('targetArray doneList', targetArray);
+    };
+
+    // if (targetArray == do)
+
     if (appendTrue) {
         document.querySelector(`${querySelectorValue? querySelectorValue:'#toDoList'}`).append(taskElement);
     }
@@ -153,6 +165,8 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
     checkBox.addEventListener('click', (event) => {
         changeTaskStatus(event.target);
     })
+
+
 
     deleteButton.addEventListener('click', (event) => {
         taskElement.remove();
@@ -330,20 +344,6 @@ function arraySort(array, position) {
 
 arraySort(localStorageArray, 4);
 
-// localStorageArray.sort(function (a, b) {
-//     let valueA = +a.id.slice(4);
-//     let valueB = +b.id.slice(4);
-//
-//     if (valueA  > valueB) {
-//         return 1;
-//     }
-//
-//     if (valueA  < valueB) {
-//         return -1;
-//     }
-//
-//     return 0;
-// });
 
 
     if (divElementLocalStorageArray.length < localStorageArray.length) {
@@ -397,7 +397,7 @@ if(localStorage.length > 0) {
             localStorageStateItemTrueDonelist.push(localStorageStateItemDoneList);
     };
 
-    arraySort(localStorageStateItemTrueDonelist, 4);
+    arraySort(localStorageStateItemTrueDonelist, 4); // 28.09.23. розібратися як відключити сортування doneList, але залишити сортування todoList
 
     localStorageStateItemTrueDonelist.map(task => {
         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
@@ -411,8 +411,9 @@ if(localStorage.length > 0) {
     localStorageStateItemTrueDonelist.map(task => {
 
         if(task.donelist == true) {
+            console.log('task', task.positionIndex);
             // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
-            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true, );
+            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
 
             let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked всіх елементах, що потрапляють у doneList у цьому місці
             //
