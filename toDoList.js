@@ -15,6 +15,7 @@ let ontoDoListAddNewTask = false;
 let todoList = [];
 let doneList = [];
 let doneListLocalStorageItems = [];
+let localStorageStateItemTrueDonelist = [];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
@@ -315,30 +316,32 @@ for(let key of keys) {
 
 
 function arraySort(array, position) {
-
-     array.sort(function (a, b) {
+    console.log('array', array);
+if (array == localStorageStateItemTrueDonelist) { // 28.09.23 Знайти спосіб як сортувати тільки todoList
+    array.sort(function (a, b) {
         // let aSlice = a.id.slice(0, 4);
         // let bSlice = b.id.slice(0, 4);
         // console.log('aSlice', aSlice );
         //  console.log('bSlice', bSlice );
         //  if(aSlice &  bSlice == "task") { //знпйти спосіб обійти помилку, що пов'язана зі слайс
-             let valueA = +a.id.slice(position);
-             let valueB = +b.id.slice(position);
+        let valueA = +a.id.slice(position);
+        let valueB = +b.id.slice(position);
 
-             if (valueA > valueB) {
-                 return 1;
-             }
+        if (valueA > valueB) {
+            return 1;
+        }
 
-             if (valueA < valueB) {
-                 return -1;
-             }
+        if (valueA < valueB) {
+            return -1;
+        }
 
-             return 0;
+        return 0;
 
-         // }
-     });
+        // }
+    });
 
     return array
+};
 
 };
 
@@ -389,7 +392,7 @@ if(localStorage.length == 0) {
 
 if(localStorage.length > 0) {
     let localStorageStateDoneList = Object.keys(localStorage);
-    let localStorageStateItemTrueDonelist = [];
+
 
     for(let keyItem of localStorageStateDoneList) {
 
