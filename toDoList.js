@@ -16,6 +16,7 @@ let todoList = [];
 let doneList = [];
 let doneListLocalStorageItems = [];
 let localStorageStateItemTrueDonelist = [];
+let localStorageStateItemTrueDonelistWithOutSort = [];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
@@ -26,7 +27,7 @@ function listObjectCollection(arrayList) {
         let id = task.children[0].id;
         let taskstatus = null;
         let donelist = null;
-        let positionIndex = task.attributes[3].nodeValue;
+        let positionIndex = Number(task.attributes[3].nodeValue);
 
         if (task.attributes[1].nodeValue == 'false') {
 
@@ -317,13 +318,17 @@ for(let key of keys) {
 
 function arraySort(array, position) {
     console.log('array', array);
-if (array == localStorageStateItemTrueDonelist) { // 28.09.23 Знайти спосіб як сортувати тільки todoList
+if(array == localStorageStateItemTrueDonelist) {
     array.sort(function (a, b) {
+
+        console.log('array a', a.donelist);
+        console.log('array b', b.donelist);
         // let aSlice = a.id.slice(0, 4);
         // let bSlice = b.id.slice(0, 4);
         // console.log('aSlice', aSlice );
         //  console.log('bSlice', bSlice );
         //  if(aSlice &  bSlice == "task") { //знпйти спосіб обійти помилку, що пов'язана зі слайс
+
         let valueA = +a.id.slice(position);
         let valueB = +b.id.slice(position);
 
@@ -337,11 +342,10 @@ if (array == localStorageStateItemTrueDonelist) { // 28.09.23 Знайти сп�
 
         return 0;
 
-        // }
     });
 
     return array
-};
+}
 
 };
 
@@ -403,7 +407,7 @@ if(localStorage.length > 0) {
     arraySort(localStorageStateItemTrueDonelist, 4); // 28.09.23. розібратися як відключити сортування doneList, але залишити сортування todoList
 
     localStorageStateItemTrueDonelist.map(task => {
-        // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
+         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         if(task.donelist == false) {
             // console.log('task number', task)
             createTask(task.id, task.text, todoList, true, task.donelist);
@@ -411,23 +415,38 @@ if(localStorage.length > 0) {
        // Потрібно розібратися чому відбувається дублювання елементів у localStorageStateItemTrueDonelist котрі відмальвуються
     });
 
+
+
     localStorageStateItemTrueDonelist.map(task => {
+        console.log('localStorageStateItemTrueDonelist task', task.donelist)
 
         if(task.donelist == true) {
-            console.log('task', task.positionIndex);
-            // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
-            createTask(task.id, task.text,   doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
-
-            let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked всіх елементах, що потрапляють у doneList у цьому місці
-            //
-            // console.log('taskIdNumber', taskIdNumber);
-            // console.log('doneList[task.id]', taskIdNumber);
-
-                // doneList[taskIdNumber].children[0].checked = true;
-
+            localStorageStateItemTrueDonelistWithOutSort.push(task);
         };
 
     });
+
+
+
+
+    localStorageStateItemTrueDonelistWithOutSort.map(task => {
+    console.log('task', task.positionIndex);
+    // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
+    createTask(task.id, task.text, doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
+
+    let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked всіх елементах, що потрапляють у doneList у цьому місці
+    //
+    // console.log('taskIdNumber', taskIdNumber);
+    // console.log('doneList[task.id]', taskIdNumber);
+
+    // doneList[taskIdNumber].children[0].checked = true;
+    });
+    console.log(' localStorageStateItemTrueDonelistWithOutSort',  localStorageStateItemTrueDonelistWithOutSort);
+
+
+
+
+
 
     // console.log('todoList 2',  todoList);
 };
