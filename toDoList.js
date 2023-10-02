@@ -20,14 +20,19 @@ let localStorageStateItemTrueDonelistWithOutSort = [];
 const doneListSavedElement = [];
 let idCount = (localStorage.length-1);
 
+
 function listObjectCollection(arrayList) {
     let toDoListObjectCollection = arrayList.map(task => {
+
         // console.log('toDoListObjectCollection task', task.attributes[3].nodeValue);
         let text = task.children[1].firstChild.nodeValue;
         let id = task.children[0].id;
         let taskstatus = null;
         let donelist = null;
+        // console.log('taskElement.parentElement',  task.parentElement);
+        // console.log('taskElement.parentElement',  task.parentElement.childNodes); // 01.10.2023 - відстежити порядок .parentElement.childNodes для <ul class="toDoList list-group" id="DoneList">
         let positionIndex = Number(task.attributes[3].nodeValue);
+
 
         if (task.attributes[1].nodeValue == 'false') {
 
@@ -49,13 +54,15 @@ function listObjectCollection(arrayList) {
     return toDoListObjectCollection;
 };
 
-const changeTaskStatus = (taskElement) => {
+    const changeTaskStatus = (taskElement) => {
 
     if (taskElement.checked) {
 
             taskElement.parentElement.setAttribute('donelist', `${true}`);
             let taskElementId = taskElement.getAttribute('id')
             doneList.push(taskElement.parentElement);
+
+
             listObjectCollection(doneList).map(task => {
 
                 let stringConstructionForArrayNodeValueDoneListDuplicate = `${'div#div_' + task.id}`;
@@ -69,15 +76,12 @@ const changeTaskStatus = (taskElement) => {
                 //     console.log( 'doneList taskIndex', doneListTaskElementPosition);
             localStorage.setItem(taskElementId, JSON.stringify(task));
 
-            // let stringConstructionForArrayNodeValueDoneListDuplicate =
-            let doneListDuplicate = doneList.concat();
-            // console.log('doneListDuplicate', doneListDuplicate);
-            let mapedDoneListDuplicate = doneListDuplicate.map(task => {
-              let arrayNodeValueDoneListDuplicate = `${'div#' + task.attributes.id.nodeValue}`;
+                let doneListDuplicate = doneList.concat();
+                let mapedDoneListDuplicate = doneListDuplicate.map(task => {
+                let arrayNodeValueDoneListDuplicate = `${'div#' + task.attributes.id.nodeValue}`;
 
 
               return arrayNodeValueDoneListDuplicate
-            //Знайти спосіб дістати повний айді що відповідає елементу 26.09.23
             });
 
             let doneListTaskElementPosition = mapedDoneListDuplicate.indexOf(stringConstructionForArrayNodeValueDoneListDuplicate, 0);
@@ -87,13 +91,9 @@ const changeTaskStatus = (taskElement) => {
                     }
 
                     localStorage.setItem(taskElementId, JSON.stringify(task));
-                    //27/09/23 Ми змінили значення в властивості positionIndex в localStorage на фактичний index елемента у doneList після того, як він був обраний у doneList
-                    // тепер необхідно знайти місце у коді яке відповідає за відрисовку doneList після перезавантаження сторінки і задати для кожного елемента у якості індекс це фактичне значення
-                    // обраного елемента у doneList
 
 
-                }
-            );
+                });
 
         todoList.splice(todoList.indexOf(taskElement, 0));
         const elem = document.querySelector(`#${taskElement.id}`).parentElement;
@@ -126,12 +126,11 @@ const changeTaskStatus = (taskElement) => {
         toDoListElement.append(elem);
         doneList.splice(doneList.indexOf(taskElement, 0));
     }
-}
+};
 
-const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus, positionIndex) => {
+    const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelectorValue, checkedStatus, positionIndex) => {
     const taskElement = document.createElement("div");
-    // console.log('targetArray', targetArray);
-    // console.log('taskelement', taskElement.id);
+
 
     taskElement.setAttribute('id', `${'div_'+id}`);
     taskElement.setAttribute('taskstatus', `${false}`);
@@ -140,7 +139,6 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
 
 
     if (checkedStatus == true) {
-        // console.log('taskElement', taskElement.firstChild.checked);
         taskElement.firstChild.checked = true;
     }
 
@@ -149,16 +147,14 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
 
     if (targetArray == todoList) {
         targetArray.push(taskElement);
-        console.log('targetArray todoList', targetArray);
+        // console.log('targetArray todoList', targetArray);
     };
 
 
     if (targetArray == doneList) {
         targetArray[positionIndex] = taskElement;
-        console.log('targetArray doneList', targetArray);
+        // console.log('targetArray doneList', targetArray);
     };
-
-    // if (targetArray == do)
 
     if (appendTrue) {
         document.querySelector(`${querySelectorValue? querySelectorValue:'#toDoList'}`).append(taskElement);
@@ -195,7 +191,6 @@ const createTask = (id, text, targetArray, appendTrue, donelistValue, querySelec
 
     taskElement.setAttribute('positionIndex',  targetArray.indexOf(taskElement));
 
-    // console.log('${div#+taskElement.id}',      );
 };
 
 let addNewTaskElementToField = document.querySelector('#addNewTaskField');
@@ -229,7 +224,6 @@ if(hideDoneList) {
         if (hideDoneList) {
             doneListSavedElement.push(elementDoneList)
             elementDoneList.remove();
-            // console.log('hello', 'hello');
             hideDoneList = false;
         } else {
             doneListSavedElement.map((savedElement)=> {
@@ -242,13 +236,11 @@ if(hideDoneList) {
 
 function mapAllListToStorage(neededMap) {
     neededMap.map((task) => {
-        // console.log('task neededNap', task);
         localStorage.setItem(task.id, JSON.stringify(task));
     });
 }
 
 let observerToDoList = new MutationObserver(mutationRecords => {
-    // console.log('todoList',  todoList);
     ontoDoListAddNewTask = true;
 
     if (ontoDoListAddNewTask) {
@@ -260,6 +252,23 @@ let observerToDoList = new MutationObserver(mutationRecords => {
 });
 
 let observerDoneList = new MutationObserver( mutationRecords => {
+
+    function realityIndexOfDoneListElements() {
+        let  doneListParentElement = document.querySelector('#DoneList');
+        let  childrenOfDoneListParentElement = doneListParentElement.children;
+
+      for  (let key in childrenOfDoneListParentElement) {
+
+          console.log('taskElement.parentElement doneListParentElement', childrenOfDoneListParentElement[key]);
+
+        }
+        return
+    };
+
+    realityIndexOfDoneListElements();
+
+
+
     let doneListLocalStorage = localStorage;
     let keysDoneLIst = Object.keys(localStorage);
 
@@ -271,8 +280,6 @@ let observerDoneList = new MutationObserver( mutationRecords => {
         }
 
     };
-    // localStorage.setItem('array', JSON.stringify(doneList));
-    // console.log('doneList', doneList);
 });
 
 if (doneList.length == 0) {
@@ -280,6 +287,7 @@ if (doneList.length == 0) {
     let divDoneListLocalStorageItemsElements = [];
 
     doneListLocalStorageItems.map(task => {
+
         createTask(task.id, task.text, divDoneListLocalStorageItemsElements, false, true);
     });
 
@@ -287,6 +295,7 @@ if (doneList.length == 0) {
 
     let doneListElementLocalStorageAddedMechanics = document.querySelector('#DoneList');
     doneList.map(task => {
+
         doneListElementLocalStorageAddedMechanics.prepend(task);
     });
 
@@ -315,50 +324,43 @@ for(let key of keys) {
     localStorageArray.push(JSON.parse(localStorage.getItem(key)));
 };
 
-
 function arraySort(array, position) {
     console.log('array', array);
 if(array == localStorageStateItemTrueDonelist) {
     array.sort(function (a, b) {
 
-        console.log('array a', a.donelist);
-        console.log('array b', b.donelist);
-        // let aSlice = a.id.slice(0, 4);
-        // let bSlice = b.id.slice(0, 4);
-        // console.log('aSlice', aSlice );
-        //  console.log('bSlice', bSlice );
-        //  if(aSlice &  bSlice == "task") { //знпйти спосіб обійти помилку, що пов'язана зі слайс
+            // console.log('array a', a.positionIndex);
+            // console.log('array b', b.positionIndex);
 
-        let valueA = +a.id.slice(position);
-        let valueB = +b.id.slice(position);
 
-        if (valueA > valueB) {
-            return 1;
-        }
+            let valueA = a.positionIndex;
+            let valueB = b.positionIndex;
+            // let valueA = +a.id.slice(position);
+            // let valueB = +b.id.slice(position);
 
-        if (valueA < valueB) {
-            return -1;
-        }
+            if (valueA > valueB) {
+                return 1;
+            }
 
-        return 0;
+            if (valueA < valueB) {
+                return -1;
+            }
+
+            return 0;
 
     });
 
     return array
 }
-
 };
 
 arraySort(localStorageArray, 4);
-
-
 
     if (divElementLocalStorageArray.length < localStorageArray.length) {
         localStorageArray.map(task => {
         createTask(task.id, task.text, divElementLocalStorageArray, false, false);
     });
 };
-
     if(todoList.length < localStorageArray.length ) {
     defaultTasks = localStorageArray;
 };
@@ -378,17 +380,8 @@ function addDefaultTasks(defaultTasksArray) {
         };
     };
 
-
-
-
-
-    // localStorageState.map(task => {
-    //     console.log('localStorageState', task);
-    // });
-
 if(localStorage.length == 0) {
     defaultTasksArray.map(task => {
-        // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         createTask(task.id, task.text, todoList, true, false);
 
     });
@@ -407,48 +400,27 @@ if(localStorage.length > 0) {
     arraySort(localStorageStateItemTrueDonelist, 4); // 28.09.23. розібратися як відключити сортування doneList, але залишити сортування todoList
 
     localStorageStateItemTrueDonelist.map(task => {
-         // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
         if(task.donelist == false) {
-            // console.log('task number', task)
             createTask(task.id, task.text, todoList, true, task.donelist);
              };
-       // Потрібно розібратися чому відбувається дублювання елементів у localStorageStateItemTrueDonelist котрі відмальвуються
-    });
-
-
+        });
 
     localStorageStateItemTrueDonelist.map(task => {
-        console.log('localStorageStateItemTrueDonelist task', task.donelist)
 
+        // console.log('localStorageStateItemTrueDonelist task', task.donelist)
         if(task.donelist == true) {
             localStorageStateItemTrueDonelistWithOutSort.push(task);
         };
 
     });
 
-
-
-
     localStorageStateItemTrueDonelistWithOutSort.map(task => {
     console.log('task', task.positionIndex);
-    // Доробити потрібно у цьому місці, на фолс змінює  defaultTasksArray тому потрібна умова за якою дефол буде зберігати стан тру там де це доречно
     createTask(task.id, task.text, doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
-
-    let taskIdNumber = task.id.slice(4); //Розібратися як робити зміни на тру у checked всіх елементах, що потрапляють у doneList у цьому місці
-    //
-    // console.log('taskIdNumber', taskIdNumber);
-    // console.log('doneList[task.id]', taskIdNumber);
-
-    // doneList[taskIdNumber].children[0].checked = true;
+    let taskIdNumber = task.id.slice(4);
     });
-    console.log(' localStorageStateItemTrueDonelistWithOutSort',  localStorageStateItemTrueDonelistWithOutSort);
 
-
-
-
-
-
-    // console.log('todoList 2',  todoList);
+    // console.log(' localStorageStateItemTrueDonelistWithOutSort',  localStorageStateItemTrueDonelistWithOutSort);
 };
 };
 
@@ -461,6 +433,3 @@ if (5 <= defaultTasks.length) {
 };
 
 
-// console.log('todoList 3', todoList);
-
-//Знайти місце у коді яке  дозволить відмінити зміну послідовності після перезавантаження сторінки у doneList
