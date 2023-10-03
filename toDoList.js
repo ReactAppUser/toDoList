@@ -14,6 +14,7 @@ let hideDoneList = true;
 let ontoDoListAddNewTask = false;
 let todoList = [];
 let doneList = [];
+let doneListForReloadPage = [];
 let doneListLocalStorageItems = [];
 let localStorageStateItemTrueDonelist = [];
 let localStorageStateItemTrueDonelistWithOutSort = [];
@@ -257,10 +258,18 @@ let observerDoneList = new MutationObserver( mutationRecords => {
         let  doneListParentElement = document.querySelector('#DoneList');
         let  childrenOfDoneListParentElement = doneListParentElement.children;
 
+        // console.log('taskElement.parentElement doneListParentElement', childrenOfDoneListParentElement);
+
       for  (let key in childrenOfDoneListParentElement) {
 
-          console.log('taskElement.parentElement doneListParentElement', childrenOfDoneListParentElement[key]);
 
+          let keyElement = key;
+          let valueElement = childrenOfDoneListParentElement[key];
+          if(String(key) !== 'item' || String(key) !== 'nameItem') {
+              doneListForReloadPage[keyElement] = valueElement;
+              console.log('doneListParentElement key', doneListForReloadPage);
+              // console.log('taskElement.parentElement doneListParentElement', valueElement);
+          };
         }
         return
     };
