@@ -15,12 +15,13 @@ let ontoDoListAddNewTask = false;
 let todoList = [];
 let doneList = [];
 let doneListForReloadPage = [];
+let doneListForReloadPageOnlyIndex = [];
 let doneListLocalStorageItems = [];
 let localStorageStateItemTrueDonelist = [];
 let localStorageStateItemTrueDonelistWithOutSort = [];
 const doneListSavedElement = [];
-let idCount = (localStorage.length-1);
 
+let idCount = (localStorage.length-1);
 
 function listObjectCollection(arrayList) {
     let toDoListObjectCollection = arrayList.map(task => {
@@ -36,10 +37,8 @@ function listObjectCollection(arrayList) {
 
 
         if (task.attributes[1].nodeValue == 'false') {
-
             taskstatus = false;
         } else {
-
             taskstatus = true;
         }
 
@@ -67,6 +66,10 @@ function listObjectCollection(arrayList) {
             listObjectCollection(doneList).map(task => {
 
                 let stringConstructionForArrayNodeValueDoneListDuplicate = `${'div#div_' + task.id}`;
+
+                let localStorageStateItemTrueDoneListNewPositionIndex = doneListForReloadPageOnlyIndex;
+                console.log('localStorageStateItemTrueDoneListNewPositionIndex', localStorageStateItemTrueDoneListNewPositionIndex);
+
                     // console.log('doneList', stringConstructionForArrayNodeValueDoneListDuplicate);
                 //
                 // let doneListTask = doneList.map(doneListTask =>  doneListTask.index);
@@ -266,11 +269,14 @@ let observerDoneList = new MutationObserver( mutationRecords => {
           let keyElement = key;
           let valueElement = childrenOfDoneListParentElement[key];
           if(String(key) !== 'item' || String(key) !== 'nameItem') {
+              console.log('key', keyElement);
               doneListForReloadPage[keyElement] = valueElement;
-              console.log('doneListParentElement key', doneListForReloadPage);
+              doneListForReloadPageOnlyIndex = doneListForReloadPage.map(task=> task);
+
               // console.log('taskElement.parentElement doneListParentElement', valueElement);
           };
         }
+        console.log('doneListParentElement key1', doneListForReloadPageOnlyIndex ); // 04/10/23  розібратися як замінити у локалСторедж позиції донеліст на ці звказанням цих індекців
         return
     };
 
@@ -342,10 +348,10 @@ if(array == localStorageStateItemTrueDonelist) {
             // console.log('array b', b.positionIndex);
 
 
-            let valueA = a.positionIndex;
-            let valueB = b.positionIndex;
-            // let valueA = +a.id.slice(position);
-            // let valueB = +b.id.slice(position);
+            // let valueA = a.positionIndex;
+            // let valueB = b.positionIndex;
+            let valueA = +a.id.slice(position);
+            let valueB = +b.id.slice(position);
 
             if (valueA > valueB) {
                 return 1;
@@ -424,7 +430,8 @@ if(localStorage.length > 0) {
     });
 
     localStorageStateItemTrueDonelistWithOutSort.map(task => {
-    console.log('task', task.positionIndex);
+
+        console.log('task', task.positionIndex);
     createTask(task.id, task.text, doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
     let taskIdNumber = task.id.slice(4);
     });
