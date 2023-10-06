@@ -26,15 +26,12 @@ let idCount = (localStorage.length-1);
 function listObjectCollection(arrayList) {
     let toDoListObjectCollection = arrayList.map(task => {
 
-        // console.log('toDoListObjectCollection task', task.attributes[3].nodeValue);
         let text = task.children[1].firstChild.nodeValue;
         let id = task.children[0].id;
         let taskstatus = null;
         let donelist = null;
-        // console.log('taskElement.parentElement',  task.parentElement);
-        // console.log('taskElement.parentElement',  task.parentElement.childNodes); // 01.10.2023 - відстежити порядок .parentElement.childNodes для <ul class="toDoList list-group" id="DoneList">
         let positionIndex = Number(task.attributes[3].nodeValue);
-
+        // let positionIndex = null;
 
         if (task.attributes[1].nodeValue == 'false') {
             taskstatus = false;
@@ -67,17 +64,7 @@ function listObjectCollection(arrayList) {
 
                 let stringConstructionForArrayNodeValueDoneListDuplicate = `${'div#div_' + task.id}`;
 
-                let localStorageStateItemTrueDoneListNewPositionIndex = doneListForReloadPageOnlyIndex;
-                console.log('localStorageStateItemTrueDoneListNewPositionIndex', localStorageStateItemTrueDoneListNewPositionIndex);
 
-                    // console.log('doneList', stringConstructionForArrayNodeValueDoneListDuplicate);
-                //
-                // let doneListTask = doneList.map(doneListTask =>  doneListTask.index);
-                // console.log('doneListTask', doneListTask);
-
-
-                //     let doneListTaskElementPosition = doneList.indexOf(doneListTaskElement, 0);
-                //     console.log( 'doneList taskIndex', doneListTaskElementPosition);
             localStorage.setItem(taskElementId, JSON.stringify(task));
 
                 let doneListDuplicate = doneList.concat();
@@ -119,7 +106,6 @@ function listObjectCollection(arrayList) {
         // add to display in new list
     } else {
         todoList.push(taskElement);
-        // console.log('elem 2', elem)
         // doneList.splice(doneList.findIndex(elem), 0);
         // same shit
     }
@@ -151,13 +137,11 @@ function listObjectCollection(arrayList) {
 
     if (targetArray == todoList) {
         targetArray.push(taskElement);
-        // console.log('targetArray todoList', targetArray);
     };
 
 
     if (targetArray == doneList) {
         targetArray[positionIndex] = taskElement;
-        // console.log('targetArray doneList', targetArray);
     };
 
     if (appendTrue) {
@@ -261,27 +245,68 @@ let observerDoneList = new MutationObserver( mutationRecords => {
         let  doneListParentElement = document.querySelector('#DoneList');
         let  childrenOfDoneListParentElement = doneListParentElement.children;
 
-        // console.log('taskElement.parentElement doneListParentElement', childrenOfDoneListParentElement);
-
-      for  (let key in childrenOfDoneListParentElement) {
+        for  (let key in childrenOfDoneListParentElement) {
 
 
           let keyElement = key;
           let valueElement = childrenOfDoneListParentElement[key];
           if(String(key) !== 'item' || String(key) !== 'nameItem') {
-              console.log('key', keyElement);
               doneListForReloadPage[keyElement] = valueElement;
-              doneListForReloadPageOnlyIndex = doneListForReloadPage.map(task=> task);
-
-              // console.log('taskElement.parentElement doneListParentElement', valueElement);
-          };
+              doneListForReloadPageOnlyIndex = doneListForReloadPage.map(task => task);
+             };
         }
-        console.log('doneListParentElement key1', doneListForReloadPageOnlyIndex ); // 04/10/23  розібратися як замінити у локалСторедж позиції донеліст на ці звказанням цих індекців
+
         return
     };
 
     realityIndexOfDoneListElements();
 
+    // console.log('doneListParentElement key1', doneListForReloadPageOnlyIndex );
+
+   let doneListForReloadPageOnlyIndexArrayElements = listObjectCollection(doneListForReloadPageOnlyIndex);
+
+    doneListForReloadPageOnlyIndexArrayElements.map(task => {
+        let duplicateDoneListForReloadPageOnlyIndex = doneListForReloadPageOnlyIndex.concat();
+        let mapedDuplicateDoneListForReloadPageOnlyIndex = duplicateDoneListForReloadPageOnlyIndex.map(task => {
+        let arrayNodeValueDoneListForReloadPageOnlyIndex = `${'div#' + task.attributes.id.nodeValue}`;
+
+
+        return arrayNodeValueDoneListForReloadPageOnlyIndex
+    });
+        console.log('mapedDuplicateDoneListForReloadPageOnlyIndex', mapedDuplicateDoneListForReloadPageOnlyIndex);
+        console.log('task', task);
+    })
+
+
+
+//     let doneListDuplicate = doneList.concat();
+//     let mapedDoneListDuplicate = doneListDuplicate.map(task => {
+//         let arrayNodeValueDoneListDuplicate = `${'div#' + task.attributes.id.nodeValue}`;
+//
+//
+//         return arrayNodeValueDoneListDuplicate
+//     });
+//
+//     let doneListTaskElementPosition = mapedDoneListDuplicate.indexOf(stringConstructionForArrayNodeValueDoneListDuplicate, 0);
+//
+//     if(doneListTaskElementPosition !== task.positionIndex) {
+//         task.positionIndex = doneListTaskElementPosition;
+//     }
+//
+//     localStorage.setItem(taskElementId, JSON.stringify(task));
+//
+//
+// });
+//
+
+    // doneListForReloadPageOnlyIndex.map(task => {
+    //     console.log('task', task);
+    //     }
+    // );
+
+    console.log('doneListForReloadPageOnlyIndexArrayElements', doneListForReloadPageOnlyIndexArrayElements);
+
+    // let sessionStorage = sessionStorage.setItem()
 
 
     let doneListLocalStorage = localStorage;
@@ -340,12 +365,11 @@ for(let key of keys) {
 };
 
 function arraySort(array, position) {
-    console.log('array', array);
+
 if(array == localStorageStateItemTrueDonelist) {
     array.sort(function (a, b) {
 
-            // console.log('array a', a.positionIndex);
-            // console.log('array b', b.positionIndex);
+
 
 
             // let valueA = a.positionIndex;
@@ -422,7 +446,6 @@ if(localStorage.length > 0) {
 
     localStorageStateItemTrueDonelist.map(task => {
 
-        // console.log('localStorageStateItemTrueDonelist task', task.donelist)
         if(task.donelist == true) {
             localStorageStateItemTrueDonelistWithOutSort.push(task);
         };
@@ -431,14 +454,17 @@ if(localStorage.length > 0) {
 
     localStorageStateItemTrueDonelistWithOutSort.map(task => {
 
-        console.log('task', task.positionIndex);
+    console.log('localStorageStateItemTrueDonelistWithOutSort', localStorageStateItemTrueDonelistWithOutSort);
     createTask(task.id, task.text, doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
     let taskIdNumber = task.id.slice(4);
     });
 
-    // console.log(' localStorageStateItemTrueDonelistWithOutSort',  localStorageStateItemTrueDonelistWithOutSort);
+
 };
 };
+
+
+// 04/10/23  розібратися як замінити у локалСторедж позиції донеліст на ці звказанням цих індекців
 
 if (defaultTasks.length < 5) {
     addDefaultTasks(defaultTasks);
