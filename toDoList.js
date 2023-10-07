@@ -19,7 +19,11 @@ let doneListForReloadPageOnlyIndex = [];
 let doneListLocalStorageItems = [];
 let localStorageStateItemTrueDonelist = [];
 let localStorageStateItemTrueDonelistWithOutSort = [];
+let stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex = [];
+let finishDoneListAfterReload = [];
 const doneListSavedElement = [];
+
+
 
 let idCount = (localStorage.length-1);
 
@@ -266,16 +270,71 @@ let observerDoneList = new MutationObserver( mutationRecords => {
    let doneListForReloadPageOnlyIndexArrayElements = listObjectCollection(doneListForReloadPageOnlyIndex);
 
     doneListForReloadPageOnlyIndexArrayElements.map(task => {
+
+        let newStringConstructionForArrayNodeValueDoneListDuplicate = `${'div#div_' + task.id}`;
+
         let duplicateDoneListForReloadPageOnlyIndex = doneListForReloadPageOnlyIndex.concat();
         let mapedDuplicateDoneListForReloadPageOnlyIndex = duplicateDoneListForReloadPageOnlyIndex.map(task => {
         let arrayNodeValueDoneListForReloadPageOnlyIndex = `${'div#' + task.attributes.id.nodeValue}`;
 
+        // stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex.push();
 
         return arrayNodeValueDoneListForReloadPageOnlyIndex
     });
+
+
         console.log('mapedDuplicateDoneListForReloadPageOnlyIndex', mapedDuplicateDoneListForReloadPageOnlyIndex);
-        console.log('task', task);
+      // mapedDuplicateDoneListForReloadPageOnlyIndex як в ньому знайти потрібний мені елемент
+
+        let indexOfElementDuplicateDoneListForReloadPageOnlyIndex = mapedDuplicateDoneListForReloadPageOnlyIndex.indexOf(newStringConstructionForArrayNodeValueDoneListDuplicate, 0);
+
+            task.positionIndex = indexOfElementDuplicateDoneListForReloadPageOnlyIndex;
+            finishDoneListAfterReload[indexOfElementDuplicateDoneListForReloadPageOnlyIndex] = task; //07/12/23 Допрацювати task таким чином, щоб отримувати таски з індексом, що відповідають фактичному положенню на сторінці у донеліст до перезавантаження і відтворити цю послідовність при перезавантаженні
+
+        console.log('finishDoneListAfterReload', finishDoneListAfterReload);
+        console.log('indexOfElementDuplicateDoneListForReloadPageOnlyIndex', indexOfElementDuplicateDoneListForReloadPageOnlyIndex);
     })
+
+
+
+
+    console.log('stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex', stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex);
+
+
+
+
+
+    // listObjectCollection(doneList).map(task => {
+    //
+    //     let stringConstructionForArrayNodeValueDoneListDuplicate = `${'div#div_' + task.id}`;
+    //
+    //
+    //     localStorage.setItem(taskElementId, JSON.stringify(task));
+    //
+    //     let doneListDuplicate = doneList.concat();
+    //     let mapedDoneListDuplicate = doneListDuplicate.map(task => {
+    //         let arrayNodeValueDoneListDuplicate = `${'div#' + task.attributes.id.nodeValue}`;
+    //
+    //
+    //         return arrayNodeValueDoneListDuplicate
+    //     });
+    //
+    //     let doneListTaskElementPosition = mapedDoneListDuplicate.indexOf(stringConstructionForArrayNodeValueDoneListDuplicate, 0);
+    //
+    //     if(doneListTaskElementPosition !== task.positionIndex) {
+    //         task.positionIndex = doneListTaskElementPosition;
+    //     }
+    //
+    //     localStorage.setItem(taskElementId, JSON.stringify(task));
+    //
+    //
+    // });
+    //
+
+
+
+    // console.log('mapedDuplicateDoneListForReloadPageOnlyIndex', mapedDuplicateDoneListForReloadPageOnlyIndex);
+    // console.log('task', task);
 
 
 
