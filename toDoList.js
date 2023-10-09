@@ -23,11 +23,14 @@ let stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex = [];
 let finishDoneListAfterReload = [];
 let doneFinishedDoneList = [];
 const doneListSavedElement = [];
+let idCount = 0;
 
 
-
-
-let idCount = (localStorage.length-1);
+if(localStorage.length == 0) {
+    idCount = 4;
+} else {
+    idCount  = (localStorage.length - 1);
+}
 
 function listObjectCollection(arrayList) {
     let toDoListObjectCollection = arrayList.map(task => {
@@ -37,7 +40,6 @@ function listObjectCollection(arrayList) {
         let taskstatus = null;
         let donelist = null;
         let positionIndex = Number(task.attributes[3].nodeValue);
-        // let positionIndex = null;
 
         if (task.attributes[1].nodeValue == 'false') {
             taskstatus = false;
@@ -268,8 +270,6 @@ let observerDoneList = new MutationObserver( mutationRecords => {
 
     realityIndexOfDoneListElements();
 
-    // console.log('doneListParentElement key1', doneListForReloadPageOnlyIndex );
-
    let doneListForReloadPageOnlyIndexArrayElements = listObjectCollection(doneListForReloadPageOnlyIndex);
 
     doneListForReloadPageOnlyIndexArrayElements.map(task => {
@@ -280,14 +280,9 @@ let observerDoneList = new MutationObserver( mutationRecords => {
         let mapedDuplicateDoneListForReloadPageOnlyIndex = duplicateDoneListForReloadPageOnlyIndex.map(task => {
         let arrayNodeValueDoneListForReloadPageOnlyIndex = `${'div#' + task.attributes.id.nodeValue}`;
 
-        // stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex.push();
-
         return arrayNodeValueDoneListForReloadPageOnlyIndex
     });
 
-
-        // console.log('mapedDuplicateDoneListForReloadPageOnlyIndex', mapedDuplicateDoneListForReloadPageOnlyIndex);
-      // mapedDuplicateDoneListForReloadPageOnlyIndex як в ньому знайти потрібний мені елемент
 
         let indexOfElementDuplicateDoneListForReloadPageOnlyIndex = mapedDuplicateDoneListForReloadPageOnlyIndex.indexOf(newStringConstructionForArrayNodeValueDoneListDuplicate, 0);
 
@@ -297,67 +292,7 @@ let observerDoneList = new MutationObserver( mutationRecords => {
             finishDoneListAfterReload.map(task => {
                 sessionStorage.setItem(task.id, JSON.stringify(task));
             });
-        // console.log('finishDoneListAfterReload', finishDoneListAfterReload);
-        // console.log('indexOfElementDuplicateDoneListForReloadPageOnlyIndex', indexOfElementDuplicateDoneListForReloadPageOnlyIndex);
     });
-
-
-    let completeFinishDoneListAfterReload = Object.keys(sessionStorage);
-
-    for (let sessionKeyItem of completeFinishDoneListAfterReload) {
-
-        let elementSessionStorage = JSON.parse(sessionStorage.getItem(sessionKeyItem));
-
-        doneFinishedDoneList[elementSessionStorage.positionIndex] = elementSessionStorage;
-
-    }
-
-
-
-
-
-
-
-    // console.log('stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex', stringCopyArrayNodeValueDoneListForReloadPageOnlyIndex);
-
-    //
-    //
-    // if(localStorage.length > 0) {
-    //     let localStorageStateDoneList = Object.keys(localStorage);
-    //
-    //
-    //     for(let keyItem of localStorageStateDoneList) {
-    //
-    //         let localStorageStateItemDoneList = JSON.parse(localStorage.getItem(keyItem));
-    //         localStorageStateItemTrueDonelist.push(localStorageStateItemDoneList);
-    //     };
-    //
-    //     arraySort(localStorageStateItemTrueDonelist, 4); // 28.09.23. розібратися як відключити сортування doneList, але залишити сортування todoList
-    //
-    //     localStorageStateItemTrueDonelist.map(task => {
-    //         if(task.donelist == false) {
-    //             createTask(task.id, task.text, todoList, true, task.donelist);
-    //         };
-    //     });
-    //
-    //     localStorageStateItemTrueDonelist.map(task => {
-    //
-    //         if(task.donelist == true) {
-    //             localStorageStateItemTrueDonelistWithOutSort.push(task);
-    //         };
-    //
-    //     });
-    //
-    //     localStorageStateItemTrueDonelistWithOutSort.map(task => {
-    //
-    //         console.log('localStorageStateItemTrueDonelistWithOutSort', localStorageStateItemTrueDonelistWithOutSort);
-    //         createTask(task.id, task.text, doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
-    //         let taskIdNumber = task.id.slice(4);
-    //     });
-    //
-    //
-    // };
-
 
 
     let doneListLocalStorage = localStorage;
@@ -487,7 +422,7 @@ if(localStorage.length > 0) {
             localStorageStateItemTrueDonelist.push(localStorageStateItemDoneList);
     };
 
-    arraySort(localStorageStateItemTrueDonelist, 4); // 28.09.23. розібратися як відключити сортування doneList, але залишити сортування todoList
+    arraySort(localStorageStateItemTrueDonelist, 4);
 
     localStorageStateItemTrueDonelist.map(task => {
         if(task.donelist == false) {
@@ -503,9 +438,17 @@ if(localStorage.length > 0) {
 
     });
 
+    let completeFinishDoneListAfterReload = Object.keys(sessionStorage);
+
+    for (let sessionKeyItem of completeFinishDoneListAfterReload) {
+
+        let elementSessionStorage = JSON.parse(sessionStorage.getItem(sessionKeyItem));
+
+        doneFinishedDoneList[elementSessionStorage.positionIndex] = elementSessionStorage;
+    }
+
     doneFinishedDoneList.map(task => {
-    // 08/10/22 Розібратися чому не відпрацбовує doneFinishedDoneList після перезавантаження сторінки
-    console.log('doneFinishedDoneList', doneFinishedDoneList);
+
     createTask(task.id, task.text, doneList, true, task.donelist, '#DoneList', true, task.positionIndex);
     let taskIdNumber = task.id.slice(4);
     });
@@ -514,9 +457,13 @@ if(localStorage.length > 0) {
 };
 };
 
-// console.log( 'doneFinishedDoneList',  );
+let pageSessionStorage = sessionStorage;
+let pageLocalStorage = localStorage;
 
-// 04/10/23  розібратися як замінити у локалСторедж позиції донеліст на ці звказанням цих індекців
+console.log('sessionStorage', pageSessionStorage);
+console.log('pageLocalStorage', pageLocalStorage);
+
+
 
 if (defaultTasks.length < 5) {
     addDefaultTasks(defaultTasks);
